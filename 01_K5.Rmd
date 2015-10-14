@@ -1,0 +1,318 @@
+---
+title: "Descriptive statistics"
+subtitle: 5mhC expression in kidney cancer
+output: 
+  html_document: 
+    keep_md: yes
+---
+
+```{r Global, echo = FALSE, warning = FALSE, message = FALSE}
+# Establishing global options
+library(knitr)
+opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+options(knitr.table.format = "markdown")
+# Loading libraries and scripts
+library(ggplot2)
+library(dplyr)
+library(simpleR)
+library(stringr)
+# Personalized ggplot2 theme
+gtheme <- theme(
+  plot.title = element_text(size = 20, vjust = 1.5),
+  axis.title.x = element_text(vjust = -.5, size = 16),
+  axis.text.x = element_text(color = "black"),
+  axis.title.y = element_text(vjust = 1.5, size = 16),
+  axis.text.y = element_text(color = "black"),
+  legend.position = "bottom"
+)
+```
+
+```{r Data}
+# Loading the dataset
+Data_full <- read.csv("DatasetKidney.csv")
+# Fixing column names
+colnames(Data_full) <- colnames(Data_full) %>%
+  str_replace_all("\\.", "_")
+# Selecting clinicopathologic features and 5hmC expression
+Data_full <- Data_full %>%
+  select(site:fu_months, starts_with("hmc"))
+```
+
+In this section we will describe the dataset, including patient's clinical features, preoperative and surgical data, pathologic features of the primary and metastatic tumors, and patient's outcome. For this section we will use the full dataset (N = `r nrow(Data_full)`), analyzing primary and metastatic tumors separately.
+
+```{r Site}
+# site
+var <- Data_full$site
+ggplot(Data_full, aes(x = var, fill = var)) +
+  geom_bar(color = "black") +
+  ggtitle("Distribution of patients by tumor site") +
+  xlab("") +
+  ylab("No. patients") +
+  scale_y_continuous(limits = c(0, 70), breaks = seq(0, 70, 10)) +
+  gtheme + theme(legend.position = "none")
+descriptive.categorical(var)
+```
+
+***
+
+## Primary tumors
+```{r Primary}
+# Selecting only primary tumors
+Data <- Data_full %>% filter(site == "Primary")
+# age
+var <- Data$age
+ggplot(Data, aes(x = var, fill = factor(0))) +
+  geom_histogram(color = "black", binwidth = 5) +
+  ggtitle("Distribution of patients by age") +
+  xlab("Age, years") +
+  ylab("No. patients") +
+  gtheme + theme(legend.position = "none")
+descriptive.numerical(var)
+# sex
+var <- Data$sex
+ggplot(Data, aes(x = var, fill = var)) +
+  geom_bar(color = "black") +
+  ggtitle("Distribution of patients by sex") +
+  xlab("") +
+  ylab("No. patients") +
+  gtheme + theme(legend.position = "none")
+descriptive.categorical(var)
+# race
+var <- Data$race
+var <- reorder(var, -table(var)[var])
+ggplot(Data, aes(x = var, fill = var)) +
+  geom_bar(color = "black") +
+  ggtitle("Distribution of patients by race") +
+  xlab("") +
+  ylab("No. patients") +
+  gtheme + theme(legend.position = "none")
+descriptive.categorical(var)
+# procedure
+var <- Data$procedure
+ggplot(Data, aes(x = var, fill = var)) +
+  geom_bar(color = "black") +
+  ggtitle("Distribution of patients by surgical procedure") +
+  xlab("") +
+  ylab("No. patients") +
+  gtheme + theme(legend.position = "none")
+descriptive.categorical(var)
+# size
+var <- Data$size
+ggplot(Data, aes(x = var, fill = factor(0))) +
+  geom_histogram(color = "black", binwidth = 1.5) +
+  ggtitle("Distribution of patients by tumor size") +
+  xlab("Tumor size, cm") +
+  ylab("No. patients") +
+  gtheme + theme(legend.position = "none")
+descriptive.numerical(var)
+# stage
+Data_nona <- Data %>% filter(!is.na(stage))
+var <- Data_nona$stage
+ggplot(Data_nona, aes(x = var, fill = var)) +
+  geom_bar(color = "black") +
+  ggtitle("Distribution of patients by tumor stage") +
+  xlab("") +
+  ylab("No. patients") +
+  gtheme + theme(legend.position = "none")
+descriptive.categorical(var)
+# fuhrman
+Data_nona <- Data %>% filter(!is.na(fuhrman))
+var <- factor(Data_nona$fuhrman,
+  labels = c("Grade 1", "Grade 2", "Grade 3", "Grade 4"))
+ggplot(Data_nona, aes(x = var, fill = var)) +
+  geom_bar(color = "black") +
+  ggtitle("Distribution of patients by tumor's Fuhrman grade") +
+  xlab("") +
+  ylab("No. patients") +
+  gtheme + theme(legend.position = "none")
+descriptive.categorical(var)
+# multifocal
+Data_nona <- Data %>% filter(!is.na(multifocal))
+var <- Data_nona$multifocal
+ggplot(Data_nona, aes(x = var, fill = var)) +
+  geom_bar(color = "black") +
+  ggtitle("Distribution of patients by tumor multifocality") +
+  xlab("") +
+  ylab("No. patients") +
+  gtheme + theme(legend.position = "none")
+descriptive.categorical(var)
+# free_margin
+Data_nona <- Data %>% filter(!is.na(free_margin))
+var <- Data_nona$free_margin
+ggplot(Data_nona, aes(x = var, fill = var)) +
+  geom_bar(color = "black") +
+  ggtitle("Distribution of patients by tumor invasion of \nsurgical margins") +
+  xlab("") +
+  ylab("No. patients") +
+  gtheme + theme(legend.position = "none")
+descriptive.categorical(var)
+# other_cancer
+Data_nona <- Data %>% filter(!is.na(other_cancer))
+var <- Data_nona$other_cancer
+ggplot(Data_nona, aes(x = var, fill = var)) +
+  geom_bar(color = "black") +
+  ggtitle("Distribution of patients by concurrent malignancies") +
+  xlab("") +
+  ylab("No. patients") +
+  gtheme + theme(legend.position = "none")
+descriptive.categorical(var)
+# fu_months
+var <- Data$fu_months
+ggplot(Data, aes(x = var, fill = factor(0))) +
+  geom_histogram(color = "black", binwidth = 6) +
+  ggtitle("Distribution of patients by follow-up length") +
+  xlab("Follow-up, months") +
+  ylab("No. patients") +
+  gtheme + theme(legend.position = "none")
+descriptive.numerical(var)
+# progression
+Data_nona <- Data %>% filter(!is.na(progression))
+var <- Data_nona$progression
+ggplot(Data_nona, aes(x = var, fill = var)) +
+  geom_bar(color = "black") +
+  ggtitle("Distribution of patients by tumor progression") +
+  xlab("") +
+  ylab("No. patients") +
+  gtheme + theme(legend.position = "none")
+descriptive.categorical(var)
+# death
+Data_nona <- Data %>% filter(!is.na(death))
+var <- Data_nona$death
+ggplot(Data_nona, aes(x = var, fill = var)) +
+  geom_bar(color = "black") +
+  ggtitle("Distribution of patients by overall mortality") +
+  xlab("") +
+  ylab("No. patients") +
+  gtheme + theme(legend.position = "none")
+descriptive.categorical(var)
+# dod
+Data_nona <- Data %>% filter(!is.na(dod))
+var <- Data_nona$dod
+ggplot(Data_nona, aes(x = var, fill = var)) +
+  geom_bar(color = "black") +
+  ggtitle("Distribution of patients by cancer-related mortality") +
+  xlab("") +
+  ylab("No. patients") +
+  gtheme + theme(legend.position = "none")
+descriptive.categorical(var)
+# hmc_mean_normal
+var <- Data$hmc_mean_normal
+ggplot(Data, aes(x = var, fill = factor(0))) +
+  geom_histogram(color = "black", binwidth = 25) +
+  ggtitle("Distribution of mean H-scores in nontumor tissue") +
+  xlab("Mean H-score") +
+  ylab("No. patients") +
+  gtheme + theme(legend.position = "none")
+descriptive.numerical(var)
+# hmc_med_normal
+var <- Data$hmc_med_normal
+ggplot(Data, aes(x = var, fill = factor(0))) +
+  geom_histogram(color = "black", binwidth = 25) +
+  ggtitle("Distribution of median H-scores in nontumor tissue") +
+  xlab("Median H-score") +
+  ylab("No. patients") +
+  gtheme + theme(legend.position = "none")
+descriptive.numerical(var)
+# hmc_mean_tumor
+var <- Data$hmc_mean_tumor
+ggplot(Data, aes(x = var, fill = factor(0))) +
+  geom_histogram(color = "black", binwidth = 20) +
+  ggtitle("Distribution of mean H-scores in tumor tissue") +
+  xlab("Mean H-score") +
+  ylab("No. patients") +
+  gtheme + theme(legend.position = "none")
+descriptive.numerical(var)
+# hmc_med_tumor
+var <- Data$hmc_med_tumor
+ggplot(Data, aes(x = var, fill = factor(0))) +
+  geom_histogram(color = "black", binwidth = 25) +
+  ggtitle("Distribution of median H-scores in tumor tissue") +
+  xlab("Mean H-score") +
+  ylab("No. patients") +
+  gtheme + theme(legend.position = "none")
+descriptive.numerical(var)
+```
+
+***
+
+## Pathologic features of metastatic tumors
+```{r Metastatic}
+# Selecting only metastatic tumors
+Data <- Data_full %>% filter(site == "Metastatic")
+# age
+var <- Data$age
+ggplot(Data, aes(x = var, fill = factor(0))) +
+  geom_histogram(color = "black", binwidth = 5) +
+  ggtitle("Distribution of patients by age") +
+  xlab("Age, years") +
+  ylab("No. patients") +
+  gtheme + theme(legend.position = "none")
+descriptive.numerical(var)
+# sex
+var <- Data$sex
+ggplot(Data, aes(x = var, fill = var)) +
+  geom_bar(color = "black") +
+  ggtitle("Distribution of patients by sex") +
+  xlab("") +
+  ylab("No. patients") +
+  gtheme + theme(legend.position = "none")
+descriptive.categorical(var)
+# race
+var <- Data$race
+var <- reorder(var, -table(var)[var])
+ggplot(Data, aes(x = var, fill = var)) +
+  geom_bar(color = "black") +
+  ggtitle("Distribution of patients by race") +
+  xlab("") +
+  ylab("No. patients") +
+  gtheme + theme(legend.position = "none")
+descriptive.categorical(var)
+# fu_months
+var <- Data$fu_months
+ggplot(Data, aes(x = var, fill = factor(0))) +
+  geom_histogram(color = "black", binwidth = 24) +
+  ggtitle("Distribution of patients by follow-up length") +
+  xlab("Follow-up, months") +
+  ylab("No. patients") +
+  gtheme + theme(legend.position = "none")
+descriptive.numerical(var)
+# death
+Data_nona <- Data %>% filter(!is.na(death))
+var <- Data_nona$death
+ggplot(Data_nona, aes(x = var, fill = var)) +
+  geom_bar(color = "black") +
+  ggtitle("Distribution of patients by overall mortality") +
+  xlab("") +
+  ylab("No. patients") +
+  gtheme + theme(legend.position = "none")
+descriptive.categorical(var)
+# dod
+Data_nona <- Data %>% filter(!is.na(dod))
+var <- Data_nona$dod
+ggplot(Data_nona, aes(x = var, fill = var)) +
+  geom_bar(color = "black") +
+  ggtitle("Distribution of patients by cancer-related mortality") +
+  xlab("") +
+  ylab("No. patients") +
+  gtheme + theme(legend.position = "none")
+descriptive.categorical(var)
+# hmc_mean_tumor
+var <- Data$hmc_mean_tumor
+ggplot(Data, aes(x = var, fill = factor(0))) +
+  geom_histogram(color = "black", binwidth = 20) +
+  ggtitle("Distribution of mean H-scores in tumor tissue") +
+  xlab("Mean H-score") +
+  ylab("No. patients") +
+  gtheme + theme(legend.position = "none")
+descriptive.numerical(var)
+# hmc_med_tumor
+var <- Data$hmc_med_tumor
+ggplot(Data, aes(x = var, fill = factor(0))) +
+  geom_histogram(color = "black", binwidth = 25) +
+  ggtitle("Distribution of median H-scores in tumor tissue") +
+  xlab("Mean H-score") +
+  ylab("No. patients") +
+  gtheme + theme(legend.position = "none")
+descriptive.numerical(var)
+```
+

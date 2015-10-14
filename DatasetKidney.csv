@@ -1,0 +1,112 @@
+caseid,tma,site,procedure,stage,fuhrman,multifocal,free.margin,size,age,sex,race,other.cancer,death,dod,progression,fu.days,fu.months,hmc.med.tumor,hmc.mean.tumor,cmyc.tumor,p27.tumor,akt.tumor,s6.tumor,ebp1.tumor,hif.tumor,pten.tumor,hmc.med.normal,hmc.mean.normal,cmyc.normal,p27.normal,pakt.normal,hs6.normal,ebp1.normal,hif.normal,level.5hmc
+S05-39093,604-605,Primary,Radical Nephrectomy,pT3a,3,Yes,Yes,3.8,66,Male,African-American,Prostate,No,No,No,180,6,85,98.75,0,144,0,4,160,98,5,192.5,192.5,0,50,8,0,0,0,Low
+S05-31679,604-605,Primary,Radical Nephrectomy,pT3a,3,No,Yes,4.5,64,Male,Caucasian,Prostate,No,No,No,223,7.4,70,70,0,163,0,4,0,150,38,202.5,205,0,30,4,0,0,0,Low
+S05-18600,604-605,Primary,Partial Nephrectomy,pT1a,2,No,No,3,59,Male,Caucasian,Prostate,No,No,No,1560,52,112.5,91.25,0,145,3,106,49,21,3,62.5,61.25,0,25,0,0,0,0,High
+S05-00773,604-605,Primary,Partial Nephrectomy,pT1a,2,No,Yes,1.5,54,Male,Caucasian,Prostate,No,No,No,NA,NA,25,23.75,0,143,10,23,60,73,0,150,146.25,0,30,0,0,0,0,Low
+S05-40747,604-605,Primary,Radical Nephrectomy,pT1a,2,No,Yes,2.6,82,Male,Caucasian,Prostate,No,No,No,1510,50.3,85,71.25,4,209,4,8,180,130,0,220,223.75,1,40,0,0,0,0,Low
+S05-35094,604-605,Primary,Partial Nephrectomy,pT1a,2,No,Yes,3.5,63,Female,African-American,Other,No,No,No,1529,51,52.5,53.75,1,269,21,190,0,195,43,150,151.25,0,38,33,0,0,0,Low
+S05-38835,604-605,Primary,Radical Nephrectomy,pT3a,3,No,Yes,4.7,72,Male,Caucasian,Other,No,No,No,430,14.3,0,2.5,0,11,0,97,80,0,0,165,167.5,0,33,10,0,0,0,Low
+S05-10180,604-605,Primary,Radical Nephrectomy,pT1b,2,No,Yes,4.5,63,Female,Caucasian,Other,No,No,No,1402,46.7,0,0,0,0,NA,13,0,0,0,175,171.25,0,45,1,0,0,0,Low
+S05-48817,604-605,Primary,Radical Nephrectomy,pT1b,2,No,Yes,4.2,51,Male,Caucasian,Other,No,No,No,1455,48.5,75,75,0,86,8,6,0,43,3,225,227.5,0,21,0,0,0,0,Low
+S05-07889,604-605,Primary,Partial Nephrectomy,pT1a,3,No,Yes,2.5,67,Male,Caucasian,Other,No,No,No,1628,54.3,35,43.75,0,165,0,13,270,54,55,165,158.75,0,45,3,2,0,0,Low
+S05-09191,604-605,Primary,Partial Nephrectomy,pT1a,1,No,Yes,1.9,62,Female,Caucasian,Other,No,No,No,112,3.7,120,102.5,1,53,5,103,0,195,7,227.5,230,0,38,8,0,0,0,High
+S05-23685,604-605,Primary,Partial Nephrectomy,pT1a,2,No,Yes,1.3,60,Female,Caucasian,Other,No,No,No,417,13.9,115,112.5,6,246,5,11,140,270,233,170,135,0,68,6,2,0,0,High
+S05-33727,604-605,Primary,Partial Nephrectomy,pT1a,2,No,Yes,2.6,49,Male,Caucasian,Other,No,No,No,1157,38.6,70,70,0,54,3,11,0,125,3,0,0,0,15,0,0,0,21,Low
+S05-32766,604-605,Primary,Partial Nephrectomy,pT3a,2,No,No,4.5,69,Female,African-American,No,No,No,No,1507,50.2,31.5,31.5,0,72,0,0,3,6,0,207.5,208.75,NA,NA,NA,NA,NA,NA,Low
+S05-41061,604-605,Primary,Radical Nephrectomy,pT3a,4,No,Yes,8.6,59,Male,African-American,No,No,No,No,1460,48.7,10,13.75,0,13,0,170,0,14,0,205,202.5,0,18,8,0,0,1,Low
+S05-50544,604-605,Primary,Radical Nephrectomy,pT3a,3,No,Yes,8.2,48,Male,African-American,No,No,No,No,NA,NA,3.5,4.25,0,1,0,5,70,0,0,145,120,0,0,0,0,0,0,Low
+S05-33522,604-605,Primary,Radical Nephrectomy,pT1b,2,No,Yes,5.5,57,Female,African-American,No,No,No,No,248,8.3,92.5,105,0,96,0,6,0,125,80,182.5,183.75,0,28,0,0,0,0,High
+S05-53469,604-605,Primary,Radical Nephrectomy,pT1b,3,No,Yes,4.5,66,Male,African-American,No,Yes,Yes,Yes,1005,33.5,21,23,0,28,0,9,10,3,5,160,158.75,0,20,0,0,0,0,Low
+S05-11149,604-605,Primary,Partial Nephrectomy,pT1a,2,No,Yes,1.4,56,Female,African-American,No,No,No,No,1614,53.8,0,5,1,168,0,0,0,60,0,165,162.5,0,23,0,0,0,0,Low
+S05-15710,604-605,Primary,Partial Nephrectomy,pT1a,2,No,Yes,1.7,43,Male,African-American,No,No,No,No,863,28.8,85,93.75,0,195,1,13,0,180,10,230,231.25,0,48,0,0,0,0,Low
+S05-27529,604-605,Primary,Radical Nephrectomy,pT1a,2,No,Yes,2.9,51,Female,African-American,No,No,No,No,1043,34.8,87.5,78.75,0,174,0,5,60,185,13,210,212.5,0,45,0,0,0,0,Low
+S05-32653,604-605,Primary,Partial Nephrectomy,pT1a,2,No,Yes,3.2,43,Female,African-American,No,No,No,No,503,16.8,102.5,95.75,0,46,0,28,140,68,0,105,87.5,0,38,8,0,0,0,High
+S05-53089,604-605,Primary,Partial Nephrectomy,pT1a,2,No,Yes,2.1,51,Male,African-American,No,No,No,No,NA,NA,7.5,10,0,6,0,0,180,0,0,207.5,208.75,0,25,0,0,0,0,Low
+S05-12836,604-605,Primary,Radical Nephrectomy,pT3a,3,No,Yes,8.5,51,Male,Asian,No,Yes,No,No,1440,48,1,14.25,0,65,0,108,0,70,7,140,113.75,0,33,0,0,0,0,Low
+S05-00775,604-605,Primary,Radical Nephrectomy,pT3b,3,Yes,Yes,6,64,Male,Caucasian,No,No,No,No,1697,56.6,1,1.75,0,68,0,13,0,0,0,120,120,0,38,0,0,0,0,Low
+S05-19510,604-605,Primary,Radical Nephrectomy,pT3a,3,No,Yes,7.1,61,Female,Caucasian,No,No,No,No,786,26.2,2.5,2.5,0,12,1,76,10,0,0,125,110,0,15,15,0,0,0,Low
+S05-30332,604-605,Primary,Radical Nephrectomy,pT3a,3,No,Yes,5,74,Male,Caucasian,No,Yes,No,No,1035,34.5,3.5,7.25,0,5,0,4,0,0,0,135,129.5,0,33,0,0,0,0,Low
+S05-32307,604-605,Primary,Radical Nephrectomy,pT3a,3,No,Yes,8.5,41,Female,Caucasian,No,No,No,No,159,5.3,51.25,45,0,99,0,0,240,0,0,187.5,173.75,0,20,1,0,0,0,Low
+S05-11900,604-605,Primary,Partial Nephrectomy,pT3a,3,No,Yes,2.5,44,Male,Caucasian,No,No,No,No,302,10.1,130,100,0,50,0,0,0,240,0,197.5,201.25,0,20,0,0,0,0,High
+S05-38949,604-605,Primary,Radical Nephrectomy,pT3a,2,Yes,No,9,51,Male,Caucasian,No,Yes,No,No,NA,NA,26,25.5,0,14,0,0,0,15,0,160,166.25,0,25,16,0,0,3,Low
+S05-42171,604-605,Primary,Partial Nephrectomy,pT3a,2,NA,Yes,2.2,54,Male,Caucasian,No,No,No,No,377,12.6,40,55,0,16,0,8,40,0,0,147.5,150,0,10,0,0,0,0,Low
+S05-43089,604-605,Primary,Radical Nephrectomy,pT3a,2,No,Yes,9.6,80,Male,Caucasian,No,No,No,No,NA,NA,27.5,23.75,0,13,0,3,0,0,5,142.5,138.75,0,18,0,0,0,0,Low
+S05-53404,604-605,Primary,Radical Nephrectomy,pT3a,3,Yes,Yes,7.9,45,Male,Caucasian,No,Yes,No,Yes,825,27.5,60,59,0,128,0,4,0,98,10,197.5,196.25,0,28,0,0,0,0,Low
+S05-53557,604-605,Primary,Partial Nephrectomy,pT3a,3,No,Yes,8.5,38,Male,Caucasian,No,No,No,No,NA,NA,67.5,70,0,84,0,1,0,0,0,160,163.5,0,25,0,0,0,0,Low
+S05-31659,604-605,Primary,Radical Nephrectomy,pT2,3,No,Yes,17,35,Male,Caucasian,No,No,No,No,546,18.2,145,123.75,0,86,0,3,5,128,110,175,162.5,0,43,1,0,0,0,High
+S05-40192,604-605,Primary,Radical Nephrectomy,pT2,4,No,Yes,10.9,60,Male,Caucasian,No,Yes,Yes,Yes,420,14,42.5,56.25,0,13,0,25,10,10,0,185,185,0,48,3,0,0,0,Low
+S05-11541,604-605,Primary,Radical Nephrectomy,pT1b,2,Yes,Yes,4.5,79,Male,Caucasian,No,No,No,No,1616,53.9,68.5,69.25,0,115,0,9,70,40,83,187.5,192.5,0,80,0,0,0,0,Low
+S05-17025,604-605,Primary,Partial Nephrectomy,pT1b,NA,No,Yes,4.5,71,Female,Caucasian,No,Yes,No,No,240,8,192.5,146.25,0,188,0,0,0,225,50,112.5,91.25,NA,NA,NA,NA,NA,NA,High
+S05-20515,604-605,Primary,Partial Nephrectomy,pT1b,2,No,Yes,5,74,Female,Caucasian,No,Yes,No,No,435,14.5,190,147.5,4,179,0,0,0,225,0,197.5,206.25,0,33,10,0,0,0,High
+S05-23594,604-605,Primary,Partial Nephrectomy,pT1b,2,No,Yes,5,63,Male,Caucasian,No,No,No,No,221,7.4,45,65,0,34,0,21,210,0,0,190,193.75,0,21,0,0,0,0,Low
+S05-24838,604-605,Primary,Radical Nephrectomy,pT1b,3,No,Yes,4.5,45,Male,Caucasian,No,No,No,No,161,5.4,32.5,35,0,69,0,3,40,25,0,155,157.5,0,30,5,0,0,0,Low
+S05-26452,604-605,Primary,Radical Nephrectomy,pT1b,2,No,Yes,4.5,55,Female,Caucasian,No,No,No,No,248,8.3,157.5,140,0,78,0,13,140,0,0,205,198.75,0,30,0,0,0,0,High
+S05-34746,604-605,Primary,Radical Nephrectomy,pT1b,2,No,Yes,5,53,Male,Caucasian,No,No,No,No,208,6.9,35,33.75,0,41,0,0,0,0,0,87.5,83.75,0,33,3,0,0,1,Low
+S05-37715,604-605,Primary,Radical Nephrectomy,pT1b,2,No,Yes,7,46,Male,Caucasian,No,No,No,No,NA,NA,15,21.25,0,133,3,3,0,133,28,195,190,0,38,0,0,0,0,Low
+S05-39223,604-605,Primary,Radical Nephrectomy,pT1b,3,No,Yes,5,38,Male,Caucasian,No,No,No,No,NA,NA,35,30,0,85,0,0,240,0,NA,180,180,0,20,1,0,0,0,Low
+S05-41626,604-605,Primary,Radical Nephrectomy,pT1b,2,No,Yes,6.5,59,Male,Caucasian,No,No,No,No,NA,NA,30,35,0,74,0,0,140,20,0,187.5,195,0,18,8,0,0,0,Low
+S05-03565,604-605,Primary,Partial Nephrectomy,pT1a,3,Yes,Yes,1.5,66,Male,Caucasian,No,No,No,No,NA,NA,7.5,7.5,0,56,1,5,105,0,5,177.5,172.5,0,45,1,0,0,0,Low
+S05-04360,604-605,Primary,Radical Nephrectomy,pT1a,2,No,Yes,2,66,Female,Caucasian,No,No,No,No,706,23.5,90,82.5,0,126,0,1,0,138,0,175,173.75,0,38,0,0,0,0,Low
+S05-07108,604-605,Primary,Partial Nephrectomy,pT1a,2,No,Yes,2,58,Male,Caucasian,No,No,No,No,235,7.8,10,8.75,0,23,0,23,0,0,0,187.5,186.25,0,40,13,0,0,0,Low
+S05-07235,604-605,Primary,Partial Nephrectomy,pT1a,2,No,Yes,2.3,40,Male,Caucasian,No,No,No,NA,198,6.6,2.5,5,0,121,0,5,0,8,0,220,210,0,28,4,0,0,0,Low
+S05-07657,604-605,Primary,Partial Nephrectomy,pT1a,2,No,Yes,3,69,Male,Caucasian,No,No,No,No,1457,48.6,170,171.5,0,90,10,43,10,263,175,237.5,236.25,2,95,13,0,0,0,High
+S05-19544,604-605,Primary,Partial Nephrectomy,pT1a,2,No,Yes,1.3,58,Male,Caucasian,No,No,No,No,NA,NA,85,87.5,0,155,0,31,180,140,0,135,133.75,0,25,9,0,0,0,Low
+S05-23387,604-605,Primary,Partial Nephrectomy,pT1a,2,No,Yes,3.2,60,Male,Caucasian,No,No,No,No,NA,NA,77.5,62.5,0,116,0,10,70,160,0,180,172.5,0,18,9,0,0,0,Low
+S05-23541,604-605,Primary,Partial Nephrectomy,pT1a,3,Yes,Yes,3.2,42,Male,Caucasian,No,No,No,No,1089,36.3,62.5,65.5,0,113,NA,48,0,45,0,155,145,0,55,3,0,0,0,Low
+S05-26953,604-605,Primary,Radical Nephrectomy,pT1a,2,No,Yes,3.7,36,Male,Caucasian,No,No,No,No,247,8.2,77.5,77.5,0,65,0,2,140,15,93,187.5,186.25,0,23,0,0,0,0,Low
+S05-29761,604-605,Primary,Partial Nephrectomy,pT1a,2,No,Yes,2,22,Male,Caucasian,No,No,No,No,240,8,21,31.75,0,72,2,0,5,45,225,100,80,NA,NA,NA,NA,NA,NA,Low
+S05-31081,604-605,Primary,Partial Nephrectomy,pT1a,2,No,Yes,1.5,46,Female,Caucasian,No,No,No,No,NA,NA,120,97.5,0,116,2,10,8,244,80,135,129.5,NA,NA,NA,NA,NA,NA,High
+S05-31837,604-605,Primary,Partial Nephrectomy,pT1a,3,No,Yes,1.9,58,Male,Caucasian,No,No,No,No,607,20.2,97.5,85,0,64,0,0,240,15,18,197.5,198.75,0,20,0,0,0,9,High
+S05-34648,604-605,Primary,Partial Nephrectomy,pT1a,2,No,Yes,2.7,73,Male,Caucasian,No,No,No,No,NA,NA,70,76.25,0,69,0,18,40,68,0,125,126.25,0,23,0,0,0,0,Low
+S05-35239,604-605,Primary,Partial Nephrectomy,pT1a,2,No,Yes,3.5,38,Female,Caucasian,No,No,No,No,1344,44.8,10,12.5,0,112,0,0,0,8,0,195,197.5,0,33,5,0,0,0,Low
+S05-35759,604-605,Primary,Partial Nephrectomy,pT1a,2,No,Yes,1.6,40,Female,Caucasian,No,No,No,No,237,7.9,4,7,0,69,0,12,4,53,0,150,150,0,33,0,0,0,0,Low
+S05-38385,604-605,Primary,Partial Nephrectomy,pT1a,2,Yes,Yes,2.6,46,Female,Caucasian,No,No,No,No,483,16.1,77.5,66.25,0,153,0,0,0,95,7,115,115,0,30,3,0,0,0,Low
+S05-42732,604-605,Primary,Partial Nephrectomy,pT1a,3,No,Yes,2.5,57,Male,Caucasian,No,No,No,No,NA,NA,20,22.5,0,69,1,6,0,188,0,107.5,123.75,0,18,0,0,0,0,Low
+S05-52063,604-605,Primary,Partial Nephrectomy,pT1a,3,No,Yes,8.5,55,Male,Caucasian,No,No,No,No,NA,NA,85,70,0,143,0,1,175,183,40,197.5,195,0,18,0,0,0,0,Low
+S05-53237,604-605,Primary,Partial Nephrectomy,pT1a,3,No,Yes,3,36,Male,Caucasian,No,No,No,No,NA,NA,37.5,32.5,1,35,1,45,10,183,0,170,167.5,0,25,0,1,0,1,Low
+S05-54425,604-605,Primary,Partial Nephrectomy,pT1a,2,No,Yes,2,31,Male,Caucasian,No,No,No,No,NA,NA,95,73.75,0,105,0,2,5,38,0,190,193.5,NA,NA,NA,NA,NA,NA,High
+S05-06514,604-605,Primary,Radical Nephrectomy,NA,2,No,NA,NA,50,Male,Caucasian,No,No,No,Yes,838,27.9,54,55,0,120,0,16,0,20,15,200,196.25,0,38,1,0,0,0,Low
+S05-24197,604-605,Primary,Partial Nephrectomy,pT1a,1,No,Yes,3.2,49,Male,Other,No,No,No,No,377,12.6,45,50.5,0,94,0,33,10,20,0,180,181.25,0,35,0,0,0,0,Low
+S05-41846,604-605,Primary,Partial Nephrectomy,pT1a,2,Yes,No,2,43,Male,Other,No,No,No,No,NA,NA,65,67.5,0,155,0,0,20,120,0,175,177.5,0,23,5,0,0,1,Low
+S05-54706,604-605,Primary,Partial Nephrectomy,pT1a,2,No,Yes,1.5,52,Male,Other,No,No,No,No,NA,NA,115,86.25,0,48,13,9,68,65,73,172.5,176.25,0,13,0,0,0,1,High
+S04-00417,609,Metastatic,NA,NA,NA,NA,NA,NA,45,Male,African-American,NA,Yes,Yes,Yes,1155,38.5,35,39,0,114,0,43,300,0,40,NA,NA,NA,NA,NA,NA,NA,NA,Low
+S04-00842,609,Metastatic,NA,NA,NA,NA,NA,NA,56,Male,Caucasian,NA,Yes,Yes,Yes,1020,34,0,1,0,20,0,160,210,200,0,NA,NA,NA,NA,NA,NA,NA,NA,Low
+S04-01691,609,Metastatic,NA,NA,NA,NA,NA,NA,74,Male,Caucasian,NA,No,No,Yes,4320,144,30,31,7,187,10,7,20,300,50,NA,NA,NA,NA,NA,NA,NA,NA,Low
+S04-05497,609,Metastatic,NA,NA,NA,NA,NA,NA,46,Male,Caucasian,NA,No,No,Yes,2010,67,70,88,0,13,0,0,80,3,0,NA,NA,NA,NA,NA,NA,NA,NA,Low
+S04-06489,609,Metastatic,NA,NA,NA,NA,NA,NA,56,Male,Caucasian,NA,Yes,Yes,Yes,165,5.5,5,3,0,5,0,110,240,40,0,NA,NA,NA,NA,NA,NA,NA,NA,Low
+S04-06745,609,Metastatic,NA,NA,NA,NA,NA,NA,38,Female,Caucasian,NA,Yes,Yes,Yes,2130,71,5,5,0,93,0,0,300,0,0,NA,NA,NA,NA,NA,NA,NA,NA,Low
+S04-09263,609,Metastatic,NA,NA,NA,NA,NA,NA,66,Male,Caucasian,NA,Yes,Yes,Yes,4980,166,80,73,3,220,10,33,0,180,50,NA,NA,NA,NA,NA,NA,NA,NA,Low
+S04-16126,609,Metastatic,NA,NA,NA,NA,NA,NA,78,Male,Caucasian,NA,Yes,Yes,Yes,60,2,183,183,60,280,8,65,10,300,0,NA,NA,NA,NA,NA,NA,NA,NA,High
+S04-20558,609,Metastatic,NA,NA,NA,NA,NA,NA,65,Male,Caucasian,NA,Yes,Yes,Yes,2490,83,20,20,0,43,0,18,10,100,7,NA,NA,NA,NA,NA,NA,NA,NA,Low
+S04-20719,609,Metastatic,NA,NA,NA,NA,NA,NA,37,Male,Caucasian,NA,No,No,Yes,2610,87,50,50,0,43,5,50,0,240,10,NA,NA,NA,NA,NA,NA,NA,NA,Low
+S04-23527,609,Metastatic,NA,NA,NA,NA,NA,NA,71,Male,Caucasian,NA,No,No,Yes,3240,108,85,92,5,120,2,63,0,90,17,NA,NA,NA,NA,NA,NA,NA,NA,Low
+S04-38603,609,Metastatic,NA,NA,NA,NA,NA,NA,58,Female,Caucasian,NA,Yes,Yes,Yes,1140,38,90,73,0,208,3,0,0,7,0,NA,NA,NA,NA,NA,NA,NA,NA,Low
+S04-43930,609,Metastatic,NA,NA,NA,NA,NA,NA,51,Female,Caucasian,NA,Yes,Yes,Yes,855,28.5,25,38,0,18,7,17,240,0,13,NA,NA,NA,NA,NA,NA,NA,NA,Low
+S04-46121,609,Metastatic,NA,NA,NA,NA,NA,NA,54,Male,Caucasian,NA,No,No,Yes,1830,61,90,90,0,42,0,43,10,0,10,NA,NA,NA,NA,NA,NA,NA,NA,Low
+S04-67301,609,Metastatic,NA,NA,NA,NA,NA,NA,66,Male,Caucasian,NA,No,No,Yes,2445,81.5,95,95,0,0,0,143,240,5,0,NA,NA,NA,NA,NA,NA,NA,NA,High
+S05-01722,609,Metastatic,NA,NA,NA,NA,NA,NA,74,Female,Caucasian,NA,No,No,Yes,1680,56,80,53,28,163,5,87,10,80,17,NA,NA,NA,NA,NA,NA,NA,NA,Low
+S05-02316,609,Metastatic,NA,NA,NA,NA,NA,NA,56,Male,Caucasian,NA,Yes,Yes,Yes,1110,37,0,18,0,7,3,127,210,33,0,NA,NA,NA,NA,NA,NA,NA,NA,Low
+S05-03263,609,Metastatic,NA,NA,NA,NA,NA,NA,63,Male,Caucasian,NA,Yes,Yes,Yes,1500,50,75,75,0,210,40,200,20,30,100,NA,NA,NA,NA,NA,NA,NA,NA,Low
+S05-06859,609,Metastatic,NA,NA,NA,NA,NA,NA,55,Female,Caucasian,NA,No,No,Yes,2280,76,0,0,0,15,7,40,210,60,0,NA,NA,NA,NA,NA,NA,NA,NA,Low
+S05-12041,609,Metastatic,NA,NA,NA,NA,NA,NA,70,Male,Caucasian,NA,No,No,Yes,3450,115,100,107,0,20,0,37,80,100,47,NA,NA,NA,NA,NA,NA,NA,NA,High
+S05-13232,609,Metastatic,NA,NA,NA,NA,NA,NA,54,Male,Caucasian,NA,Yes,Yes,Yes,600,20,15,18,0,33,3,33,40,7,7,NA,NA,NA,NA,NA,NA,NA,NA,Low
+S05-17030,609,Metastatic,NA,NA,NA,NA,NA,NA,53,Female,Caucasian,NA,Yes,Yes,Yes,390,13,20,18,17,5,2,3,160,50,0,NA,NA,NA,NA,NA,NA,NA,NA,Low
+S05-23953,609,Metastatic,NA,NA,NA,NA,NA,NA,66,Male,Caucasian,NA,No,No,Yes,1590,53,170,160,0,62,10,8,0,100,213,NA,NA,NA,NA,NA,NA,NA,NA,High
+S05-24542,609,Metastatic,NA,NA,NA,NA,NA,NA,61,Male,Caucasian,NA,Yes,Yes,Yes,810,27,155,130,0,18,0,8,0,0,0,NA,NA,NA,NA,NA,NA,NA,NA,High
+S05-37001,609,Metastatic,NA,NA,NA,NA,NA,NA,63,Male,Caucasian,NA,Yes,Yes,Yes,1185,39.5,113,113,18,90,50,200,40,300,0,NA,NA,NA,NA,NA,NA,NA,NA,High
+S05-37346,609,Metastatic,NA,NA,NA,NA,NA,NA,80,Female,Caucasian,NA,No,No,Yes,1500,50,190,200,25,267,12,140,0,150,90,NA,NA,NA,NA,NA,NA,NA,NA,High
+S05-39841,609,Metastatic,NA,NA,NA,NA,NA,NA,61,Male,Caucasian,NA,Yes,Yes,Yes,975,32.5,17,17,0,18,0,60,60,30,0,NA,NA,NA,NA,NA,NA,NA,NA,Low
+S05-47558,609,Metastatic,NA,NA,NA,NA,NA,NA,80,Female,Caucasian,NA,Yes,Yes,Yes,5400,180,105,105,0,107,18,22,10,210,200,NA,NA,NA,NA,NA,NA,NA,NA,High
+S05-48681,609,Metastatic,NA,NA,NA,NA,NA,NA,67,Male,Caucasian,NA,Yes,Yes,Yes,630,21,120,113,0,92,2,2,10,203,107,NA,NA,NA,NA,NA,NA,NA,NA,High
+S05-52452,609,Metastatic,NA,NA,NA,NA,NA,NA,63,Female,Caucasian,NA,Yes,Yes,Yes,150,5,170,170,0,10,0,2,0,240,57,NA,NA,NA,NA,NA,NA,NA,NA,High
+S05-52773,609,Metastatic,NA,NA,NA,NA,NA,NA,67,Male,Caucasian,NA,Yes,Yes,Yes,330,11,30,27,0,67,0,10,160,8,3,NA,NA,NA,NA,NA,NA,NA,NA,Low
+S05-54002,609,Metastatic,NA,NA,NA,NA,NA,NA,68,Male,Caucasian,NA,Yes,Yes,Yes,330,11,200,200,0,0,13,0,20,3,0,NA,NA,NA,NA,NA,NA,NA,NA,High
+S05-59083,609,Metastatic,NA,NA,NA,NA,NA,NA,62,Female,Caucasian,NA,No,No,Yes,5790,193,48,48,25,30,0,25,10,100,40,NA,NA,NA,NA,NA,NA,NA,NA,Low
+S05-59932,609,Metastatic,NA,NA,NA,NA,NA,NA,72,Female,Caucasian,NA,Yes,Yes,Yes,1635,54.5,55,58,7,163,0,53,0,270,0,NA,NA,NA,NA,NA,NA,NA,NA,Low
+S05-63955,609,Metastatic,NA,NA,NA,NA,NA,NA,70,Female,Caucasian,NA,No,No,Yes,1380,46,55,62,0,158,0,17,20,137,0,NA,NA,NA,NA,NA,NA,NA,NA,Low
+S05-73691,609,Metastatic,NA,NA,NA,NA,NA,NA,59,Male,Caucasian,NA,Yes,Yes,Yes,765,25.5,80,75,0,43,7,40,5,110,0,NA,NA,NA,NA,NA,NA,NA,NA,Low
+S06-31563,609,Metastatic,NA,NA,NA,NA,NA,NA,39,Male,Caucasian,NA,No,No,Yes,2610,87,130,113,0,150,0,0,80,137,10,NA,NA,NA,NA,NA,NA,NA,NA,High
+S06-35368,609,Metastatic,NA,NA,NA,NA,NA,NA,72,Male,Caucasian,NA,No,No,Yes,6930,231,20,20,0,23,0,0,240,0,0,NA,NA,NA,NA,NA,NA,NA,NA,Low
+S06-54572,609,Metastatic,NA,NA,NA,NA,NA,NA,65,Female,Caucasian,NA,Yes,Yes,Yes,1155,38.5,85,93,0,35,0,27,160,13,0,NA,NA,NA,NA,NA,NA,NA,NA,Low
+S06-57913,609,Metastatic,NA,NA,NA,NA,NA,NA,60,Male,Caucasian,NA,Yes,Yes,Yes,765,25.5,70,63,13,225,17,50,5,180,0,NA,NA,NA,NA,NA,NA,NA,NA,Low
+S06-62748,609,Metastatic,NA,NA,NA,NA,NA,NA,64,Male,Caucasian,NA,Yes,Yes,Yes,660,22,90,90,0,6,0,120,270,73,0,NA,NA,NA,NA,NA,NA,NA,NA,Low

@@ -1,0 +1,37 @@
+LABEL		DESCRIPTION
+caseid		Surgical Path Number of the Case
+tma		Tissue Microarray (604-605/609)
+site		Tumor site (Primary/Metastatic)
+procedure	Surgical Treatment (Radical/Partial Nephrectomy)
+stage		pT stage at Nephrectomy (pT1a/pT1b/pT2/pT3a/pT3b)
+fuhrman		Fuhrman Grade (1/2/3/4)
+multifocal	Multifocal Tumor (Yes/No)
+free.margin	Tumor Free Margin (Yes/No)
+size		Size of Primary tumor, cm
+age		Patient's Age at Nephrectomy, years
+sex		Patient's sex (Male/Female)
+race		Patient's race (Caucasian/African-American/Asian/Other)
+other.cancer	History of other tumor elsewhere (Prostate/Other/No)
+death		Overall Mortality (Yes/No)
+dod		Cancer-Specific Mortality (Yes/No)
+progression	Tumor Progression (Yes/No)
+fu.days		Follow-up, days
+fu.months	Follow-up, months
+hmc.med.tumor	5hmC Median H-Score in Tumor
+hmc.mean.tumor	5hmC Mean H-Score in Tumor
+cmyc.tumor	c-MYC H-Score in Tumor
+p27.tumor	p27 H-Score in Tumor
+akt.tumor	phos-AKT H-Score in Tumor
+s6.tumor	phos-S6 H-Score in Tumor
+ebp1.tumor	phos-4EBP1 H-Score in Tumor
+hif.tumor	HIF H-Score in Tumor
+pten.tumor	PTEN H-Score in Tumor
+hmc.mean.normal	5hmC Mean H-Score in Normal Tissue
+hmc.med.normal	5hmC Median H-Score in Normal Tissue
+cmyc.normal	c-MYC H-Score in Normal Tissue
+p27.normal	p27 H-Score in Normal Tissue
+akt.normal	phos-AKT H-Score in Normal Tissue
+s6.normal	phos-S6 H-Score in Normal Tissue
+ebp1.normal	phos-4EBP1 H-Score in Normal Tissue
+hif.normal	HIF H-Score in Normal Tissue
+level.5hmc	5hmC levels (Low/high) based on Q3

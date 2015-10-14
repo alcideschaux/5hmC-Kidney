@@ -1,0 +1,288 @@
+---
+title: "Expression in normal and tumor tissues"
+subtitle: 5mhC expression in kidney cancer
+output: 
+  html_document: 
+    keep_md: yes
+---
+
+```{r Global, echo = FALSE, warning = FALSE, message = FALSE}
+# Establishing global options
+library(knitr)
+opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+options(knitr.table.format = "markdown")
+# Loading libraries and scripts
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(simpleR)
+library(stringr)
+# Personalized ggplot2 theme
+gtheme <- theme(
+  plot.title = element_text(size = 20, vjust = 1.5),
+  axis.title.x = element_text(vjust = -.5, size = 16),
+  axis.text.x = element_text(color = "black"),
+  axis.title.y = element_text(vjust = 1.5, size = 16),
+  axis.text.y = element_text(color = "black"),
+  legend.position = "bottom"
+)
+```
+
+```{r Data}
+# Loading the dataset
+Data_full <- read.csv("DatasetKidney.csv")
+# Fixing column names
+colnames(Data_full) <- colnames(Data_full) %>%
+  str_replace_all("\\.", "_")
+# Selecting clinicopathologic features and 5hmC expression
+Data_full <- Data_full %>%
+  select(site:fu_months, starts_with("hmc"))
+```
+
+In this section we will compare 5hmC expression levels between normal tissue and primary tumors (paired samples, N = `r nrow(Data_full[Data_full$site == "Primary", ])`) and between primary and metastatic tumors (unpaired samples, N = `r nrow(Data_full[Data_full$site == "Metastatic", ])` for metastatic tumors).
+
+Comparison of 5hmC expression levels will be done considering 3 approaches: 1) using the raw H-score values; 2) categorizing 5hmC expression in low and high using the median as the cutoff point; 3) categorizing 5hmC expression in low and high using the upper tertile as the cutoff point. Only the median values will be used for the analysis.
+
+```{r Data_Wrangling}
+# For normal vs. tumor tissues
+Data <- Data_full %>%
+  filter(site == "Primary") %>%
+  select(hmc_med_normal, hmc_med_tumor) %>%
+  gather(Tissue, H, hmc_med_normal, hmc_med_tumor) %>%
+  mutate(Tissue = factor(
+    ifelse(Tissue == "hmc_med_normal", "Normal tissue", "Primary tumor")
+  )) %>%
+  mutate(p50 = factor(
+    ifelse(H > median(H), "High expression", "Low expression")
+  )) %>%
+  mutate(q3 = factor(
+    ifelse(H > quantile(H, .66), "High expression", "Low expression")
+  ))
+# For primary vs. metastatic tumors
+Data_full <- Data_full %>%
+  mutate(p50 = factor(
+    ifelse(hmc_med_tumor > median(hmc_med_tumor),
+      "High expression", "Low expression")
+  )) %>%
+  mutate(q3 = factor(
+    ifelse(hmc_med_tumor > quantile(hmc_med_tumor, .66),
+      "High expression", "Low expression")
+  ))
+```
+
+***
+
+## Normal tissue vs. primary tumors
+### First approach: Using raw H-scores
+```{r NvP_1}
+# P value
+p <- with(Data, wilcox.test(H ~ Tissue, paired = TRUE)$p.value)
+p <- format(p, digits = 2, scientific = TRUE, justify = "centre")
+# Density plot
+ggplot(Data, aes(x = H, fill = Tissue)) +
+  geom_density(alpha = .75) +
+  scale_x_continuous(limits = c(0, 300), breaks = seq(0, 300, 50)) +
+  xlab("H-scores") +
+  ylab("Density") +
+  ggtitle("Comparison of H-scores in \nnormal vs. tumor tissues") +
+  gtheme +
+  theme(legend.position = c(0.875, 0.85), legend.title = element_blank())
+# Boxplot
+ggplot(Data, aes(x = Tissue, y = H, fill = Tissue)) +
+  stat_boxplot(geom = "errorbar", stat_params = list(width = 0.5)) +
+  geom_boxplot(outlier.shape = 1) +
+  scale_y_continuous(limits = c(0, 300), breaks = seq(0, 300, 50)) +
+  ylab("H-scores") +
+  ggtitle("Comparison of 5hmC H-scores in \nnormal vs. tumor tissues") +
+  annotate("text", x = 1.5, y = 300,
+           label = paste("Wilcoxon test P value =", p)) +
+  gtheme + theme(legend.position = "none")
+with(Data, descriptive.numerical.group(H, Tissue))
+```
+
+***
+
+### Second approach: Expression levels using the median as cutoff point
+```{r NvP_2}
+# P value
+p <- with(Data, fisher.test(p50, Tissue))$p.value
+p <- format(p, digits = 2, scientific = TRUE, justify = "centre")
+# Barplot
+ggplot(Data, aes(x = Tissue, fill = p50)) +
+  geom_bar(color = "black", position = position_dodge()) +
+  scale_y_continuous(limits = c(0, 65), breaks = seq(0, 65, 10)) +
+  ylab("No. patients") +
+  annotate("text", x = 1.5, y = 60,
+    label = paste("Fisher exact test \nP value =", p)) +
+  ggtitle("Comparison of 5hmC expression levels in \nnormal vs. tumor tissues") +
+  gtheme + theme(legend.title = element_blank())
+with(Data, descriptive.categorical.group(Tissue, p50))
+```
+
+***
+
+### Third approach: Expression levels using the upper tertile as cutoff point
+```{r NvP_3}
+# P value
+p <- with(Data, fisher.test(q3, Tissue))$p.value
+p <- format(p, digits = 2, scientific = TRUE, justify = "centre")
+# Barplot
+ggplot(Data, aes(x = Tissue, fill = q3)) +
+  geom_bar(color = "black", position = position_dodge()) +
+  scale_y_continuous(limits = c(0, 70), breaks = seq(0, 70, 10)) +
+  ylab("No. patients") +
+  annotate("text", x = 1.5, y = 65,
+    label = paste("Fisher exact test \nP value =", p)) +
+  ggtitle("Comparison of 5hmC expression levels in \nnormal vs. tumor tissues") +
+  gtheme + theme(legend.title = element_blank())
+with(Data, descriptive.categorical.group(Tissue, q3))
+```
+
+***
+
+## Primary vs. metastatic tumors
+### First approach: using raw H-scores
+```{r PvM_1}
+# P value
+p <- with(Data_full, wilcox.test(hmc_med_tumor ~ site)$p.value)
+p <- format(p, digits = 2, scientific = TRUE, justify = "centre")
+# Density plot
+ggplot(Data_full, aes(x = hmc_med_tumor, fill = site)) +
+  geom_density(alpha = .75) +
+  scale_x_continuous(limits = c(0, 300), breaks = seq(0, 300, 50)) +
+  xlab("H-scores") +
+  ylab("Density") +
+  ggtitle("Comparison of H-scores in \nprimary vs. metastatic tumors") +
+  gtheme +
+  theme(legend.position = c(0.9, 0.85), legend.title = element_blank())
+# Boxplot
+ggplot(Data_full, aes(x = site, y = hmc_med_tumor, fill = site)) +
+  stat_boxplot(geom = "errorbar", stat_params = list(width = 0.5)) +
+  geom_boxplot(outlier.shape = 1) +
+  scale_y_continuous(limits = c(0, 300), breaks = seq(0, 300, 50)) +
+  ylab("H-scores") +
+  ggtitle("Comparison of 5hmC H-scores in \nprimary vs. metastatic tumors") +
+  annotate("text", x = 1.5, y = 300,
+           label = paste("Mann-Whitney test P value =", p)) +
+  gtheme + theme(legend.position = "none")
+with(Data_full, descriptive.numerical.group(hmc_med_tumor, site))
+```
+
+***
+
+### Second approach: Expression levels using the median as cutoff point
+```{r PvM_2}
+# P value
+p <- with(Data_full, fisher.test(p50, site))$p.value
+p <- format(p, digits = 2, scientific = TRUE, justify = "centre")
+# Barplot
+ggplot(Data_full, aes(x = site, fill = p50)) +
+  geom_bar(color = "black", position = position_dodge()) +
+  scale_y_continuous(limits = c(0, 45), breaks = seq(0, 45, 10)) +
+  ylab("No. patients") +
+  annotate("text", x = 1.5, y = 40,
+    label = paste("Fisher exact test \nP value =", p)) +
+  ggtitle("Comparison of 5hmC expression levels in \nprimary vs. metastatic tumors") +
+  gtheme + theme(legend.title = element_blank())
+with(Data_full, descriptive.categorical.group(site, p50))
+```
+
+***
+
+### Third approach: Expression levels using the upper tertile as cutoff point
+```{r PvM_3}
+# P value
+p <- with(Data_full, fisher.test(q3, site))$p.value
+p <- format(p, digits = 2, scientific = TRUE, justify = "centre")
+# Barplot
+ggplot(Data_full, aes(x = site, fill = q3)) +
+  geom_bar(color = "black", position = position_dodge()) +
+  scale_y_continuous(limits = c(0, 55), breaks = seq(0, 55, 10)) +
+  ylab("No. patients") +
+  annotate("text", x = 1.5, y = 50,
+    label = paste("Fisher exact test \nP value =", p)) +
+  ggtitle("Comparison of 5hmC expression levels in \nprimary vs. metastatic tumors") +
+  gtheme + theme(legend.title = element_blank())
+with(Data_full, descriptive.categorical.group(site, q3))
+```
+
+***
+
+## Normal tissue vs. primary tumors vs. metastatic tumors
+```{r Data_NPM}
+Data_met <- Data_full %>%
+  filter(site == "Metastatic") %>%
+  select(hmc_med_tumor, p50, q3) %>%
+  mutate(Tissue = "Metastatic tumor") %>%
+  rename(H = hmc_med_tumor)
+Data_met <- Data_met[,c(4,1:3)]
+Data_NPM <- rbind(Data, Data_met)
+
+```
+
+### First approach: using raw H-scores
+```{r NPM_1}
+# P value
+p <- with(Data_NPM, kruskal.test(H ~ Tissue)$p.value)
+p <- format(p, digits = 2, scientific = TRUE, justify = "centre")
+# Density plot
+ggplot(Data_NPM, aes(x = H, fill = Tissue)) +
+  geom_density(alpha = .75) +
+  scale_x_continuous(limits = c(0, 300), breaks = seq(0, 300, 50)) +
+  xlab("H-scores") +
+  ylab("Density") +
+  ggtitle("Comparison of 5hmC H-scores in normal tissue \nvs. primary tumors vs. metastatic tumors") +
+  gtheme +
+  theme(legend.position = c(0.875, 0.85), legend.title = element_blank())
+# Boxplot
+ggplot(Data_NPM, aes(x = Tissue, y = H, fill = Tissue)) +
+  stat_boxplot(geom = "errorbar", stat_params = list(width = 0.5)) +
+  geom_boxplot(outlier.shape = 1) +
+  scale_y_continuous(limits = c(0, 300), breaks = seq(0, 300, 50)) +
+  ylab("H-scores") +
+  ggtitle("Comparison of 5hmC H-scores in normal tissue \nvs. primary tumors vs. metastatic tumors") +
+  annotate("text", x = 2, y = 300,
+           label = paste("Kruskal-Wallis test P value =", p)) +
+  gtheme + theme(legend.position = "none")
+with(Data_NPM, descriptive.numerical.group(H, Tissue))
+```
+
+***
+
+### Second approach: Expression levels using the median as cutoff point
+```{r NPM_2}
+# P value
+p <- with(Data_NPM, fisher.test(p50, Tissue))$p.value
+p <- format(p, digits = 2, scientific = TRUE, justify = "centre")
+# Barplot
+ggplot(Data_NPM, aes(x = Tissue, fill = p50)) +
+  geom_bar(color = "black", position = position_dodge()) +
+  scale_y_continuous(limits = c(0, 70), breaks = seq(0, 70, 10)) +
+  ylab("No. patients") +
+  annotate("text", x = 2, y = 70,
+    label = paste("Fisher exact test P value =", p)) +
+  ggtitle("Comparison of 5hmC expression levels in normal \ntissue vs. primary tumors vs. metastatic tumors") +
+  gtheme + theme(legend.title = element_blank())
+with(Data_NPM, descriptive.categorical.group(Tissue, p50))
+```
+
+***
+
+### Third approach: Expression levels using the upper tertile as cutoff point
+```{r NPM_3}
+# P value
+p <- with(Data_NPM, fisher.test(q3, Tissue))$p.value
+p <- format(p, digits = 2, scientific = TRUE, justify = "centre")
+# Barplot
+ggplot(Data_NPM, aes(x = Tissue, fill = q3)) +
+  geom_bar(color = "black", position = position_dodge()) +
+  scale_y_continuous(limits = c(0, 80), breaks = seq(0, 80, 10)) +
+  ylab("No. patients") +
+  annotate("text", x = 2, y = 77,
+    label = paste("Fisher exact test P value =", p)) +
+  ggtitle("Comparison of 5hmC expression levels in normal \ntissue vs. primary tumors vs. metastatic tumors") +
+  gtheme + theme(legend.title = element_blank())
+with(Data_NPM, descriptive.categorical.group(Tissue, q3))
+```
+
+***
