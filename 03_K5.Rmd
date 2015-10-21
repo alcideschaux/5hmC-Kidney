@@ -1,0 +1,260 @@
+---
+title: Expression and outcome in primary tumors
+subtitle: 5mhC expression in kidney cancer
+output: 
+  html_document: 
+    keep_md: yes
+---
+
+```{r Global, echo = FALSE, warning = FALSE, message = FALSE}
+# Establishing global options
+library(knitr)
+opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+options(knitr.table.format = "markdown")
+# Loading libraries and scripts
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(simpleR)
+library(stringr)
+# Personalized ggplot2 theme
+gtheme <- theme(
+  plot.title = element_text(size = 20, vjust = 1.5),
+  axis.title.x = element_text(vjust = -.5, size = 16),
+  axis.text.x = element_text(color = "black"),
+  axis.title.y = element_text(vjust = 1.5, size = 16),
+  axis.text.y = element_text(color = "black"),
+  legend.position = "bottom"
+)
+```
+
+For this section we will use 3 different approaches for evaluating the association of 5hmC and outcome: 1) using 5hmC H-scores; 2) categorizing 5hmC median expression in low/high levels using the median of the distribution as the cutoff point; 3) categorizing 5hmC median expression in low/high levels using the upper tertile of the distribution as the cutoff point.
+
+Outcomes will include tumor progression, overall mortality, and cancer-related mortality. This section includes only the analysis of primary tumors. Metastatic tumors are analyzed separately.
+
+```{r Data}
+# Load the dataset
+Data_full <- read.csv("DatasetKidney.csv")
+# Fix column names
+colnames(Data_full) <- colnames(Data_full) %>%
+  str_replace_all("\\.", "_")
+# Selecte clinicopathologic features and 5hmC expression
+Data_full <- Data_full %>%
+  select(site:fu_months, hmc_med_tumor)
+# Create categories of 5hmC expression
+Data_full <- Data_full %>%
+  mutate(p50 = factor(
+    ifelse(hmc_med_tumor > median(hmc_med_tumor),
+      "High expression", "Low expression")
+  )) %>%
+  mutate(q3 = factor(
+    ifelse(hmc_med_tumor > quantile(hmc_med_tumor, .66),
+      "High expression", "Low expression")
+  ))
+# Create age group category
+Data_full <- Data_full %>%
+  mutate(
+    age_group = factor(
+      ifelse(age > median(age, na.rm = TRUE),
+        "Above median age", "Below median age")
+    ),
+    size_group = factor(
+      ifelse(size > median(size, na.rm = TRUE),
+        "Above median size", "Below median size")
+    )
+  )
+# Select only primary tumors
+Data <- Data_full %>%
+  filter(site == "Primary")
+```
+
+## Approach #1
+In this approach we will compare 5hmC `H-scores` against clinicopathologic features and outcome. Comparisons will be made using the Mann-Whitney U test or the Kruskal-Wallis test. Age and tumor size will be categorized in 2 levels using the median age as the cutoff point.
+
+```{r Approach_1}
+Y <- Data$hmc_med_tumor
+# age_group
+X <- Data$age_group
+Z <- 200
+P <- format(kruskal.test(Y ~ X)$p.value, digits = 2, scientific = TRUE)
+ggplot(Data, aes(x = X, y = Y, fill = X)) +
+  stat_boxplot(geom = "errorbar", stat_params = list(width = 0.5)) +
+  geom_boxplot(color = "black", outlier.shape = 1) +
+  ggtitle("Comparison of 5hmC H-scores by \nage group") +
+  xlab("Age group") +
+  ylab("5hmC H-score") +
+  scale_y_continuous(limits = c(0, Z), breaks = seq(0, Z, 50)) +
+  annotate("text", label = paste("P value =", P),
+    x = 1.5, y = Z) +
+  gtheme + theme(legend.position = "none")
+descriptive.numerical.group(Y, X)
+# sex
+X <- Data$sex
+Z <- 200
+P <- format(kruskal.test(Y ~ X)$p.value, digits = 2, scientific = TRUE)
+ggplot(Data, aes(x = X, y = Y, fill = X)) +
+  stat_boxplot(geom = "errorbar", stat_params = list(width = 0.5)) +
+  geom_boxplot(color = "black", outlier.shape = 1) +
+  ggtitle("Comparison of 5hmC H-scores by \nsex") +
+  xlab("Sex") +
+  ylab("5hmC H-score") +
+  scale_y_continuous(limits = c(0, Z), breaks = seq(0, Z, 50)) +
+  annotate("text", label = paste("P value =", P),
+    x = 1.5, y = Z) +
+  gtheme + theme(legend.position = "none")
+descriptive.numerical.group(Y, X)
+# race
+X <- Data$race
+Z <- 200
+P <- format(kruskal.test(Y ~ X)$p.value, digits = 2, scientific = TRUE)
+ggplot(Data, aes(x = X, y = Y, fill = X)) +
+  stat_boxplot(geom = "errorbar", stat_params = list(width = 0.5)) +
+  geom_boxplot(color = "black", outlier.shape = 1) +
+  ggtitle("Comparison of 5hmC H-scores by \nrace") +
+  xlab("Race") +
+  ylab("5hmC H-score") +
+  scale_y_continuous(limits = c(0, Z), breaks = seq(0, Z, 50)) +
+  annotate("text", label = paste("P value =", P),
+    x = 2, y = Z) +
+  gtheme + theme(legend.position = "none")
+descriptive.numerical.group(Y, X)
+# size_group
+Data_nona <- Data %>% filter(!is.na(size_group))
+X <- Data_nona$size_group
+Y <- Data_nona$hmc_med_tumor
+Z <- 200
+P <- format(kruskal.test(Y ~ X)$p.value, digits = 2, scientific = TRUE)
+ggplot(Data_nona, aes(x = X, y = Y, fill = X)) +
+  stat_boxplot(geom = "errorbar", stat_params = list(width = 0.5)) +
+  geom_boxplot(color = "black", outlier.shape = 1) +
+  ggtitle("Comparison of 5hmC H-scores by \ntumor size group") +
+  xlab("Tumor size group") +
+  ylab("5hmC H-score") +
+  scale_y_continuous(limits = c(0, Z), breaks = seq(0, Z, 50)) +
+  annotate("text", label = paste("P value =", P),
+    x = 1.5, y = Z) +
+  gtheme + theme(legend.position = "none")
+descriptive.numerical.group(Y, X)
+# stage
+Data_nona <- Data %>% filter(!is.na(stage))
+X <- Data_nona$stage
+Y <- Data_nona$hmc_med_tumor
+Z <- 200
+P <- format(kruskal.test(Y ~ X)$p.value, digits = 2, scientific = TRUE)
+ggplot(Data_nona, aes(x = X, y = Y, fill = X)) +
+  stat_boxplot(geom = "errorbar", stat_params = list(width = 0.5)) +
+  geom_boxplot(color = "black", outlier.shape = 1) +
+  ggtitle("Comparison of 5hmC H-scores by \npT stage") +
+  xlab("pT stage") +
+  ylab("5hmC H-score") +
+  scale_y_continuous(limits = c(0, Z), breaks = seq(0, Z, 50)) +
+  annotate("text", label = paste("P value =", P),
+    x = 3, y = Z) +
+  gtheme + theme(legend.position = "none")
+descriptive.numerical.group(Y, X)
+# fuhrman
+Data_nona <- Data %>% filter(!is.na(fuhrman))
+X <- factor(Data_nona$fuhrman, labels = c(
+  "Grade 1", "Grade 2", "Grade 3", "Grade 4"))
+Y <- Data_nona$hmc_med_tumor
+Z <- 200
+P <- format(kruskal.test(Y ~ X)$p.value, digits = 2, scientific = TRUE)
+ggplot(Data_nona, aes(x = X, y = Y, fill = X)) +
+  stat_boxplot(geom = "errorbar", stat_params = list(width = 0.5)) +
+  geom_boxplot(color = "black", outlier.shape = 1) +
+  ggtitle("Comparison of 5hmC H-scores by \nFuhrman grade") +
+  xlab("Fuhrman grade") +
+  ylab("5hmC H-score") +
+  scale_y_continuous(limits = c(0, Z), breaks = seq(0, Z, 50)) +
+  annotate("text", label = paste("P value =", P),
+    x = 2.5, y = Z) +
+  gtheme + theme(legend.position = "none")
+descriptive.numerical.group(Y, X)
+# multifocal
+Data_nona <- Data %>% filter(!is.na(multifocal))
+X <- Data_nona$multifocal
+Y <- Data_nona$hmc_med_tumor
+Z <- 200
+P <- format(kruskal.test(Y ~ X)$p.value, digits = 2, scientific = TRUE)
+ggplot(Data_nona, aes(x = X, y = Y, fill = X)) +
+  stat_boxplot(geom = "errorbar", stat_params = list(width = 0.5)) +
+  geom_boxplot(color = "black", outlier.shape = 1) +
+  ggtitle("Comparison of 5hmC H-scores by \ntumor multifocality") +
+  xlab("Multifocal tumor") +
+  ylab("5hmC H-score") +
+  scale_y_continuous(limits = c(0, Z), breaks = seq(0, Z, 50)) +
+  annotate("text", label = paste("P value =", P),
+    x = 1.5, y = Z) +
+  gtheme + theme(legend.position = "none")
+descriptive.numerical.group(Y, X)
+# free_margin
+Data_nona <- Data %>% filter(!is.na(free_margin))
+X <- Data_nona$free_margin
+Y <- Data_nona$hmc_med_tumor
+Z <- 200
+P <- format(kruskal.test(Y ~ X)$p.value, digits = 2, scientific = TRUE)
+ggplot(Data_nona, aes(x = X, y = Y, fill = X)) +
+  stat_boxplot(geom = "errorbar", stat_params = list(width = 0.5)) +
+  geom_boxplot(color = "black", outlier.shape = 1) +
+  ggtitle("Comparison of 5hmC H-scores by \ntumor invasion of sugical margins") +
+  xlab("Invasion of surgical margins") +
+  ylab("5hmC H-score") +
+  scale_y_continuous(limits = c(0, Z), breaks = seq(0, Z, 50)) +
+  annotate("text", label = paste("P value =", P),
+    x = 1.5, y = Z) +
+  gtheme + theme(legend.position = "none")
+descriptive.numerical.group(Y, X)
+# progression
+Data_nona <- Data %>% filter(!is.na(progression))
+X <- Data_nona$progression
+Y <- Data_nona$hmc_med_tumor
+Z <- 200
+P <- format(kruskal.test(Y ~ X)$p.value, digits = 2, scientific = TRUE)
+ggplot(Data_nona, aes(x = X, y = Y, fill = X)) +
+  stat_boxplot(geom = "errorbar", stat_params = list(width = 0.5)) +
+  geom_boxplot(color = "black", outlier.shape = 1) +
+  ggtitle("Comparison of 5hmC H-scores by \ntumor progression") +
+  xlab("Tumor progression") +
+  ylab("5hmC H-score") +
+  scale_y_continuous(limits = c(0, Z), breaks = seq(0, Z, 50)) +
+  annotate("text", label = paste("P value =", P),
+    x = 1.5, y = Z) +
+  gtheme + theme(legend.position = "none")
+descriptive.numerical.group(Y, X)
+# death
+Data_nona <- Data %>% filter(!is.na(death))
+X <- Data_nona$death
+Y <- Data_nona$hmc_med_tumor
+Z <- 200
+P <- format(kruskal.test(Y ~ X)$p.value, digits = 2, scientific = TRUE)
+ggplot(Data_nona, aes(x = X, y = Y, fill = X)) +
+  stat_boxplot(geom = "errorbar", stat_params = list(width = 0.5)) +
+  geom_boxplot(color = "black", outlier.shape = 1) +
+  ggtitle("Comparison of 5hmC H-scores by \noverall mortality") +
+  xlab("Overall mortality") +
+  ylab("5hmC H-score") +
+  scale_y_continuous(limits = c(0, Z), breaks = seq(0, Z, 50)) +
+  annotate("text", label = paste("P value =", P),
+    x = 1.5, y = Z) +
+  gtheme + theme(legend.position = "none")
+descriptive.numerical.group(Y, X)
+# dod
+Data_nona <- Data %>% filter(!is.na(dod))
+X <- Data_nona$dod
+Y <- Data_nona$hmc_med_tumor
+Z <- 200
+P <- format(kruskal.test(Y ~ X)$p.value, digits = 2, scientific = TRUE)
+ggplot(Data_nona, aes(x = X, y = Y, fill = X)) +
+  stat_boxplot(geom = "errorbar", stat_params = list(width = 0.5)) +
+  geom_boxplot(color = "black", outlier.shape = 1) +
+  ggtitle("Comparison of 5hmC H-scores by \ncancer-related mortality") +
+  xlab("Cancer-related mortality") +
+  ylab("5hmC H-score") +
+  scale_y_continuous(limits = c(0, Z), breaks = seq(0, Z, 50)) +
+  annotate("text", label = paste("P value =", P),
+    x = 1.5, y = Z) +
+  gtheme + theme(legend.position = "none")
+descriptive.numerical.group(Y, X)
+
+```
+
