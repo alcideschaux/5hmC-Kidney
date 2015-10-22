@@ -17,6 +17,7 @@ library(dplyr)
 library(tidyr)
 library(simpleR)
 library(stringr)
+library(grid)
 # Personalized ggplot2 theme
 gtheme <- theme(
   plot.title = element_text(size = 20, vjust = 1.5),
@@ -24,7 +25,7 @@ gtheme <- theme(
   axis.text.x = element_text(color = "black"),
   axis.title.y = element_text(vjust = 1.5, size = 16),
   axis.text.y = element_text(color = "black"),
-  legend.position = "bottom"
+  plot.margin = unit(c(3, 1, .5, .5), "lines")
 )
 ```
 
@@ -255,6 +256,52 @@ ggplot(Data_nona, aes(x = X, y = Y, fill = X)) +
     x = 1.5, y = Z) +
   gtheme + theme(legend.position = "none")
 descriptive.numerical.group(Y, X)
+```
 
+***
+
+## Approach # 2
+
+In this approach we will compare 5hmC levels (categorizing 5hmC expression in low/high levels using the `median` as the cutoff point) against clinicopathologic features and outcome. Comparisons will be made using the Fisher's exact test.
+
+```{r Approach_2}
+Y <- Data$p50
+# age_group
+X <- Data$age_group
+P <- format(fisher.test(Y, X)$p.value, digits = 2, scientific = TRUE)
+Z <- 25
+ggplot(Data, aes(x = X, fill = Y)) +
+  geom_bar(color = "black", position = position_dodge()) +
+  xlab("") +
+  ylab("No. patients") +
+  scale_y_continuous(limits = c(0, Z)) +
+  annotate("text", label = paste("P value =", P), x = 1.5, y = Z) +
+  scale_fill_discrete(name = "5hmC level") +
+  ggtitle("Comparison of 5hmC levels \nby age group") +
+  gtheme
+descriptive.categorical.group(Y, X)
+# sex
+X <- Data$sex
+P <- format(fisher.test(Y, X)$p.value, digits = 2, scientific = TRUE)
+Z <- 35
+ggplot(Data, aes(x = X, fill = Y)) +
+  geom_bar(color = "black", position = position_dodge()) +
+  xlab("") +
+  ylab("No. patients") +
+  scale_y_continuous(limits = c(0, Z)) +
+  annotate("text", label = paste("P value =", P), x = 1.5, y = Z) +
+  scale_fill_discrete(name = "5hmC level") +
+  ggtitle("Comparison of 5hmC levels \nby sex") +
+  gtheme
+descriptive.categorical.group(Y, X)
+# race
+# size_group
+# stage
+# fuhrman
+# multifocal
+# free_margin
+# progression
+# death
+# dod
 ```
 
