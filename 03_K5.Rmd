@@ -268,40 +268,187 @@ In this approach we will compare 5hmC levels (categorizing 5hmC expression in lo
 Y <- Data$p50
 # age_group
 X <- Data$age_group
-P <- format(fisher.test(Y, X)$p.value, digits = 2, scientific = TRUE)
+P <- format(fisher.test(X, Y)$p.value, digits = 2, scientific = TRUE)
 Z <- 25
 ggplot(Data, aes(x = X, fill = Y)) +
   geom_bar(color = "black", position = position_dodge()) +
-  xlab("") +
   ylab("No. patients") +
+  scale_fill_discrete(name = "5hmC level") +
+  gtheme +
+  xlab("") +
   scale_y_continuous(limits = c(0, Z)) +
   annotate("text", label = paste("P value =", P), x = 1.5, y = Z) +
-  scale_fill_discrete(name = "5hmC level") +
-  ggtitle("Comparison of 5hmC levels \nby age group") +
-  gtheme
-descriptive.categorical.group(Y, X)
+  ggtitle("Comparison of 5hmC levels \nby age group")
+descriptive.categorical.group(X, Y)
 # sex
 X <- Data$sex
-P <- format(fisher.test(Y, X)$p.value, digits = 2, scientific = TRUE)
+P <- format(fisher.test(X, Y)$p.value, digits = 2, scientific = TRUE)
 Z <- 35
 ggplot(Data, aes(x = X, fill = Y)) +
   geom_bar(color = "black", position = position_dodge()) +
-  xlab("") +
   ylab("No. patients") +
+  scale_fill_discrete(name = "5hmC level") +
+  gtheme +
+  xlab("") +
   scale_y_continuous(limits = c(0, Z)) +
   annotate("text", label = paste("P value =", P), x = 1.5, y = Z) +
-  scale_fill_discrete(name = "5hmC level") +
   ggtitle("Comparison of 5hmC levels \nby sex") +
   gtheme
-descriptive.categorical.group(Y, X)
+descriptive.categorical.group(X, Y)
 # race
+X <- Data$race
+P <- format(fisher.test(X, Y)$p.value, digits = 2, scientific = TRUE)
+Z <- 35
+ggplot(Data, aes(x = X, fill = Y)) +
+  geom_bar(color = "black", position = position_dodge()) +
+  ylab("No. patients") +
+  scale_fill_discrete(name = "5hmC level") +
+  gtheme +
+  xlab("") +
+  scale_y_continuous(limits = c(0, Z)) +
+  annotate("text", label = paste("P value =", P), x = 1.5, y = Z) +
+  ggtitle("Comparison of 5hmC levels \nby race") +
+  gtheme
+descriptive.categorical.group(X, Y)
 # size_group
+Data_nona <- Data %>% filter(!is.na(size_group))
+Y <- Data_nona$p50
+X <- Data_nona$size_group
+P <- format(fisher.test(X, Y)$p.value, digits = 2, scientific = TRUE)
+Z <- 25
+ggplot(Data_nona, aes(x = X, fill = Y)) +
+  geom_bar(color = "black", position = position_dodge()) +
+  ylab("No. patients") +
+  scale_fill_discrete(name = "5hmC level") +
+  gtheme +
+  xlab("") +
+  scale_y_continuous(limits = c(0, Z)) +
+  annotate("text", label = paste("P value =", P), x = 1.5, y = Z) +
+  ggtitle("Comparison of 5hmC levels \nby tumor size") +
+  gtheme
+descriptive.categorical.group(X, Y)
 # stage
+Data_nona <- Data %>% filter(!is.na(stage))
+Y <- Data_nona$p50
+X <- Data_nona$stage
+P <- format(fisher.test(X, Y)$p.value, digits = 2, scientific = TRUE)
+Z <- 25
+ggplot(Data_nona, aes(x = X, fill = Y)) +
+  geom_bar(color = "black", position = position_dodge()) +
+  ylab("No. patients") +
+  scale_fill_discrete(name = "5hmC level") +
+  gtheme +
+  xlab("") +
+  scale_y_continuous(limits = c(0, Z)) +
+  annotate("text", label = paste("P value =", P), x = 3, y = Z) +
+  ggtitle("Comparison of 5hmC levels \nby pT stage") +
+  gtheme
+descriptive.categorical.group(X, Y)
 # fuhrman
+Data_nona <- Data %>% filter(!is.na(fuhrman))
+Y <- Data_nona$p50
+X <- factor(Data_nona$fuhrman, labels = c(
+  "Grade 1", "Grade 2", "Grade 3", "Grade 4"))
+P <- format(fisher.test(X, Y)$p.value, digits = 2, scientific = TRUE)
+Z <- 25
+ggplot(Data_nona, aes(x = X, fill = Y)) +
+  geom_bar(color = "black", position = position_dodge()) +
+  ylab("No. patients") +
+  scale_fill_discrete(name = "5hmC level") +
+  gtheme +
+  xlab("") +
+  scale_y_continuous(limits = c(0, Z)) +
+  annotate("text", label = paste("P value =", P), x = 2.5, y = Z) +
+  ggtitle("Comparison of 5hmC levels \nby Fuhrman grade") +
+  gtheme
+descriptive.categorical.group(X, Y)
 # multifocal
+Data_nona <- Data %>% filter(!is.na(multifocal))
+Y <- Data_nona$p50
+X <- Data_nona$multifocal
+P <- format(fisher.test(X, Y)$p.value, digits = 2, scientific = TRUE)
+Z <- 35
+ggplot(Data_nona, aes(x = X, fill = Y)) +
+  geom_bar(color = "black", position = position_dodge()) +
+  ylab("No. patients") +
+  scale_fill_discrete(name = "5hmC level") +
+  gtheme +
+  xlab("") +
+  scale_y_continuous(limits = c(0, Z)) +
+  annotate("text", label = paste("P value =", P), x = 1.5, y = Z) +
+  ggtitle("Comparison of 5hmC levels \nby tumor multifocality") +
+  gtheme
+descriptive.categorical.group(X, Y)
 # free_margin
+Data_nona <- Data %>% filter(!is.na(free_margin))
+Y <- Data_nona$p50
+X <- Data_nona$free_margin
+P <- format(fisher.test(X, Y)$p.value, digits = 2, scientific = TRUE)
+Z <- 40
+ggplot(Data_nona, aes(x = X, fill = Y)) +
+  geom_bar(color = "black", position = position_dodge()) +
+  ylab("No. patients") +
+  scale_fill_discrete(name = "5hmC level") +
+  gtheme +
+  xlab("") +
+  scale_y_continuous(limits = c(0, Z)) +
+  annotate("text", label = paste("P value =", P), x = 1.5, y = Z) +
+  ggtitle("Comparison of 5hmC levels \nby tumor invasion of surgical margins") +
+  gtheme
+descriptive.categorical.group(X, Y)
 # progression
+Data_nona <- Data %>% filter(!is.na(progression))
+Y <- Data_nona$p50
+X <- Data_nona$progression
+P <- format(fisher.test(X, Y)$p.value, digits = 2, scientific = TRUE)
+Z <- 35
+ggplot(Data_nona, aes(x = X, fill = Y)) +
+  geom_bar(color = "black", position = position_dodge()) +
+  ylab("No. patients") +
+  scale_fill_discrete(name = "5hmC level") +
+  gtheme +
+  xlab("") +
+  scale_y_continuous(limits = c(0, Z)) +
+  annotate("text", label = paste("P value =", P), x = 1.5, y = Z) +
+  ggtitle("Comparison of 5hmC levels \nby tumor progression") +
+  gtheme
+descriptive.categorical.group(X, Y)
 # death
+Data_nona <- Data %>% filter(!is.na(death))
+Y <- Data_nona$p50
+X <- Data_nona$death
+P <- format(fisher.test(X, Y)$p.value, digits = 2, scientific = TRUE)
+Z <- 35
+ggplot(Data_nona, aes(x = X, fill = Y)) +
+  geom_bar(color = "black", position = position_dodge()) +
+  ylab("No. patients") +
+  scale_fill_discrete(name = "5hmC level") +
+  gtheme +
+  xlab("") +
+  scale_y_continuous(limits = c(0, Z)) +
+  annotate("text", label = paste("P value =", P), x = 1.5, y = Z) +
+  ggtitle("Comparison of 5hmC levels \nby overall mortality") +
+  gtheme
+descriptive.categorical.group(X, Y)
 # dod
+Data_nona <- Data %>% filter(!is.na(dod))
+Y <- Data_nona$p50
+X <- Data_nona$dod
+P <- format(fisher.test(X, Y)$p.value, digits = 2, scientific = TRUE)
+Z <- 40
+ggplot(Data_nona, aes(x = X, fill = Y)) +
+  geom_bar(color = "black", position = position_dodge()) +
+  ylab("No. patients") +
+  scale_fill_discrete(name = "5hmC level") +
+  gtheme +
+  xlab("") +
+  scale_y_continuous(limits = c(0, Z)) +
+  annotate("text", label = paste("P value =", P), x = 1.5, y = Z) +
+  ggtitle("Comparison of 5hmC levels \nby cancer-related mortality") +
+  gtheme
+descriptive.categorical.group(X, Y)
 ```
 
+***
+
+s
