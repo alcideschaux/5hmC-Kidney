@@ -29,6 +29,32 @@ gtheme <- theme(
 )
 ```
 
+```{r Plotting}
+# Barplots
+G_barplot <- function(){
+  Z <- max(table(X, Y)) + 4
+  W <- (nlevels(X)/2) + .5
+  P <- format(fisher.test(X, Y)$p.value, digits = 2, scientific = TRUE)
+  ggplot(Data_G, aes(x = X, fill = Y)) +
+    geom_bar(color = "black", position = position_dodge()) +
+    ylab("No. patients") +
+    scale_fill_discrete(name = "5hmC level") +
+    gtheme +
+    xlab("") +
+    scale_y_continuous(limits = c(0, Z), breaks = seq(0, Z, 10)) +
+    annotate("text", label = paste("P value =", P), x = W, y = Z) +
+    ggtitle(M) +
+    gtheme
+}
+# Table of factor by group
+T_Factor <- function(){
+  Data_G <- na.omit(Data[,c(V, O)])
+  X <- Data_G[,2]
+  Y <- Data_G[,1]
+  descriptive.categorical.group(X, Y)
+}
+```
+
 For this section we will use 3 different approaches for evaluating the association of 5hmC and outcome: 1) using 5hmC H-scores; 2) categorizing 5hmC median expression in low/high levels using the median of the distribution as the cutoff point; 3) categorizing 5hmC median expression in low/high levels using the upper tertile of the distribution as the cutoff point.
 
 Outcomes will include tumor progression, overall mortality, and cancer-related mortality. This section includes only the analysis of primary tumors. Metastatic tumors are analyzed separately.
@@ -42,6 +68,10 @@ colnames(Data_full) <- colnames(Data_full) %>%
 # Selecte clinicopathologic features and 5hmC expression
 Data_full <- Data_full %>%
   select(site:fu_months, hmc_med_tumor)
+# Recoding fuhrman as factor
+Data_full$fuhrman <- factor(Data_full$fuhrman, labels = c(
+  "Grade 1", "Grade 2", "Grade 3", "Grade 4"
+))
 # Create categories of 5hmC expression
 Data_full <- Data_full %>%
   mutate(p50 = factor(
@@ -155,8 +185,7 @@ ggplot(Data_nona, aes(x = X, y = Y, fill = X)) +
 descriptive.numerical.group(Y, X)
 # fuhrman
 Data_nona <- Data %>% filter(!is.na(fuhrman))
-X <- factor(Data_nona$fuhrman, labels = c(
-  "Grade 1", "Grade 2", "Grade 3", "Grade 4"))
+X <- Data_nona$fuhrman
 Y <- Data_nona$hmc_med_tumor
 Z <- 200
 P <- format(kruskal.test(Y ~ X)$p.value, digits = 2, scientific = TRUE)
@@ -347,8 +376,7 @@ descriptive.categorical.group(X, Y)
 # fuhrman
 Data_nona <- Data %>% filter(!is.na(fuhrman))
 Y <- Data_nona$p50
-X <- factor(Data_nona$fuhrman, labels = c(
-  "Grade 1", "Grade 2", "Grade 3", "Grade 4"))
+X <- Data_nona$fuhrman
 P <- format(fisher.test(X, Y)$p.value, digits = 2, scientific = TRUE)
 Z <- 25
 ggplot(Data_nona, aes(x = X, fill = Y)) +
@@ -451,4 +479,66 @@ descriptive.categorical.group(X, Y)
 
 ***
 
-s
+## Approach # 3
+
+In this approach we will compare 5hmC levels (categorizing 5hmC expression in low/high levels using the `upper tertile` as the cutoff point) against clinicopathologic features and outcome. Comparisons will be made using the Fisher's exact test.
+
+```{r Approach_3}
+V <- "q3"
+# age_group
+O <- "age_group"
+M <- "Comparison of 5hmC levels \nby age"
+Data_G <- na.omit(Data[,c(V, O)]); X <- Data_G[,2]; Y <- Data_G[,1]
+G_barplot(); T_Factor()
+# sex
+O <- "sex"
+M <- "Comparison of 5hmC levels \nby pT sex"
+Data_G <- na.omit(Data[,c(V, O)]); X <- Data_G[,2]; Y <- Data_G[,1]
+G_barplot(); T_Factor()
+# race
+O <- "race"
+M <- "Comparison of 5hmC levels \nby race"
+Data_G <- na.omit(Data[,c(V, O)]); X <- Data_G[,2]; Y <- Data_G[,1]
+G_barplot(); T_Factor()
+# size_group
+O <- "size_group"
+M <- "Comparison of 5hmC levels \nby tumor size"
+Data_G <- na.omit(Data[,c(V, O)]); X <- Data_G[,2]; Y <- Data_G[,1]
+G_barplot(); T_Factor()
+# stage
+O <- "stage"
+M <- "Comparison of 5hmC levels \nby pT stage"
+Data_G <- na.omit(Data[,c(V, O)]); X <- Data_G[,2]; Y <- Data_G[,1]
+G_barplot(); T_Factor()
+# fuhrman
+O <- "fuhrman"
+M <- "Comparison of 5hmC levels \nby Fuhrman grade"
+Data_G <- na.omit(Data[,c(V, O)]); X <- Data_G[,2]; Y <- Data_G[,1]
+G_barplot(); T_Factor()
+# multifocal
+O <- "multifocal"
+M <- "Comparison of 5hmC levels \nby tumor multifocality"
+Data_G <- na.omit(Data[,c(V, O)]); X <- Data_G[,2]; Y <- Data_G[,1]
+G_barplot(); T_Factor()
+# free_margin
+O <- "free_margin"
+M <- "Comparison of 5hmC levels \nby tumor invasion of surgical margin"
+Data_G <- na.omit(Data[,c(V, O)]); X <- Data_G[,2]; Y <- Data_G[,1]
+G_barplot(); T_Factor()
+# progression
+O <- "progression"
+M <- "Comparison of 5hmC levels \nby tumor progression"
+Data_G <- na.omit(Data[,c(V, O)]); X <- Data_G[,2]; Y <- Data_G[,1]
+G_barplot(); T_Factor()
+# death
+O <- "death"
+M <- "Comparison of 5hmC levels \nby overall mortality"
+Data_G <- na.omit(Data[,c(V, O)]); X <- Data_G[,2]; Y <- Data_G[,1]
+G_barplot(); T_Factor()
+# dod
+O <- "dod"
+M <- "Comparison of 5hmC levels \nby cancer-related mortality"
+Data_G <- na.omit(Data[,c(V, O)]); X <- Data_G[,2]; Y <- Data_G[,1]
+G_barplot(); T_Factor()
+```
+
