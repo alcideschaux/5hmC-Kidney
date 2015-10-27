@@ -34,15 +34,16 @@ gtheme <- theme(
 
 ```{r gsurv}
 # ggplot2 survival curves using ggfortify
-gsurv <- function(FU, outcome, status){
+gsurv <- function(FU, outcome, status, Y = 0.1){
   ht <- survdiff(Surv(FU, as.numeric(outcome)) ~ status)
   p <- format(pchisq(ht$chisq, df = 1, lower.tail = FALSE), digits = 2)
   fit <- survfit(Surv(FU, as.numeric(outcome)) ~ status)
   autoplot(fit, conf.int = FALSE, censor = FALSE, surv.size = 1) +
     ylab("Survival") +
-    xlab("Follow-up") +
-    annotate("text", label = paste("P =", p), x = 15, y = .05) +
+    xlab("Follow-up, months") +
+    annotate("text", label = paste("Log-rank P value =", p), x = 12, y = Y) +
     scale_colour_discrete(labels = levels(status)) +
+    scale_x_continuous(limits = c(0, 60), breaks = seq(0, 60, 12)) +
     gtheme
 }
 ```
@@ -95,11 +96,11 @@ Data_full <- Data_full %>%
       ifelse(as.numeric(fuhrman) > 2, "High grade", "Low grade")
     )
   )
-# Create pT stages category (> pT1)
+# Create pT stages category (> pT1a)
 Data_full <- Data_full %>%
   mutate(
     stage_high = factor(
-      ifelse(as.numeric(stage) > 2, "High pT", "Low pT")
+      ifelse(as.numeric(stage) > 1, "High pT", "Low pT")
     )
   )
 # Select only primary tumors
@@ -121,31 +122,44 @@ In this section we will plot `Kaplan-Meier curves` for overall mortality and can
 outcome <- Data$death
 # Patient's age
 status <- Data$age_group
-gsurv(FU, outcome, status) + ggtitle("Patient's age and overall mortality")
+gsurv(FU, outcome, status, Y = 0.625) +
+  ggtitle("Patient's age and overall mortality") +
+  theme(legend.position = c(0.86, 0.9))
 # Patient's sex
 status <- Data$sex
-gsurv(FU, outcome, status) + ggtitle("Patient's sex and overall mortality")
-# Patient's race
-status <- Data$race
-gsurv(FU, outcome, status) + ggtitle("Patient's race and overall mortality")
+gsurv(FU, outcome, status, Y = 0.65) +
+  ggtitle("Patient's sex and overall mortality") +
+  theme(legend.position = c(0.92, 0.9))
 # size_group
 status <- Data$size_group
-gsurv(FU, outcome, status) + ggtitle("Tumor size and overall mortality")
+gsurv(FU, outcome, status, Y = 0.45) +
+  ggtitle("Tumor size and overall mortality") +
+  theme(legend.position = c(0.85, 0.8))
 # stage_high
 status <- Data$stage_high
-gsurv(FU, outcome, status) + ggtitle("High tumor stage (>pT1) and overall mortality")
+gsurv(FU, outcome, status, Y = 0.45) +
+  ggtitle("High tumor stage (>pT1a) and overall mortality") +
+  theme(legend.position = c(0.9, 0.85))
 # fuhrman_high
 status <- Data$fuhrman_high
-gsurv(FU, outcome, status) + ggtitle("High Fuhrman grade (> Grade 2) and overall mortality")
+gsurv(FU, outcome, status, Y = 0.45) +
+  ggtitle("High Fuhrman grade (>2) and overall mortality") +
+  theme(legend.position = c(0.9, 0.75))
 # multifocal
 status <- Data$multifocal
-gsurv(FU, outcome, status) + ggtitle("Tumor multifocality and overall mortality")
+gsurv(FU, outcome, status, Y = 0.65) +
+  ggtitle("Tumor multifocality and overall mortality") +
+  theme(legend.position = c(0.925, 0.9))
 # free_margin
 status <- Data$free_margin
-gsurv(FU, outcome, status) + ggtitle("Tumor invasion of surgical margins and overall mortality")
+gsurv(FU, outcome, status, Y = 0.65) +
+  ggtitle("Invasion of surgical margins and overall mortality") +
+  theme(legend.position = c(0.925, 0.9))
 # progression
 status <- Data$progression
-gsurv(FU, outcome, status) + ggtitle("Tumor progression and overall mortality")
+gsurv(FU, outcome, status, Y = 0.05) +
+  ggtitle("Tumor progression and overall mortality") +
+  theme(legend.position = c(0.925, 0.9))
 ```
 
 ***
@@ -154,7 +168,46 @@ gsurv(FU, outcome, status) + ggtitle("Tumor progression and overall mortality")
 ```{r Clinicopath_DOD}
 # Establishing outcome
 outcome <- Data$dod
-
+# Patient's age
+status <- Data$age_group
+gsurv(FU, outcome, status, Y = 0.85) +
+  ggtitle("Patient's age and cancer-related mortality") +
+  theme(legend.position = c(0.86, 0.8))
+# Patient's sex
+status <- Data$sex
+gsurv(FU, outcome, status, Y = 0.80) +
+  ggtitle("Patient's sex and cancer-related mortality") +
+  theme(legend.position = c(0.92, 0.85))
+# size_group
+status <- Data$size_group
+gsurv(FU, outcome, status, Y = 0.80) +
+  ggtitle("Tumor size and cancer-related mortality") +
+  theme(legend.position = c(0.85, 0.8))
+# stage_high
+status <- Data$stage_high
+gsurv(FU, outcome, status, Y = 0.80) +
+  ggtitle("High tumor stage (>pT1a) and \ncancer-related mortality") +
+  theme(legend.position = c(0.9, 0.85))
+# fuhrman_high
+status <- Data$fuhrman_high
+gsurv(FU, outcome, status, Y = 0.75) +
+  ggtitle("High Fuhrman grade (>2) and \ncancer-related mortality") +
+  theme(legend.position = c(0.9, 0.75))
+# multifocal
+status <- Data$multifocal
+gsurv(FU, outcome, status, Y = 0.85) +
+  ggtitle("Tumor multifocality and \ncancer-related mortality") +
+  theme(legend.position = c(0.925, 0.8))
+# free_margin
+status <- Data$free_margin
+gsurv(FU, outcome, status, Y = 0.91) +
+  ggtitle("Invasion of surgical margins and \ncancer-related mortality") +
+  theme(legend.position = c(0.925, 0.875))
+# progression
+status <- Data$progression
+gsurv(FU, outcome, status, Y = 0.05) +
+  ggtitle("Tumor progression and \ncancer-related mortality") +
+  theme(legend.position = c(0.925, 0.825))
 ```
 
 ## 5hmC levels and survival: Approach #1
@@ -162,9 +215,16 @@ In this approch we will plot `Kaplan-Meier curves` for overall mortality and can
 
 ```{r Approach1}
 # 5hmC and overall mortality
-
+outcome <- Data$death
+status <- Data$p50
+gsurv(FU, outcome, status, Y = 0.63) +
+  ggtitle("5hmC expression levels and \noverall mortality") +
+  theme(legend.position = c(0.875, 0.875))
 # 5hmC and cancer-related mortality
-
+outcome <- Data$dod
+gsurv(FU, outcome, status, Y = 0.865) +
+  ggtitle("5hmC expression levels and \ncancer-related mortality") +
+  theme(legend.position = c(0.875, 0.8))
 ```
 
 ***
@@ -174,9 +234,16 @@ In this approch we will plot `Kaplan-Meier curves` for overall mortality and can
 
 ```{r Approach2}
 # 5hmC and overall mortality
-
+outcome <- Data$death
+status <- Data$q3
+gsurv(FU, outcome, status, Y = 0.72) +
+  ggtitle("5hmC expression levels and \noverall mortality") +
+  theme(legend.position = c(0.875, 0.875))
 # 5hmC and cancer-related mortality
-
+outcome <- Data$dod
+gsurv(FU, outcome, status, Y = 0.9) +
+  ggtitle("5hmC expression levels and \ncancer-related mortality") +
+  theme(legend.position = c(0.875, 0.8))
 ```
 
 ***
