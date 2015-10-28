@@ -12,5 +12,5 @@ This repository contains the data analysis of 5-hydroxy-methyl-cytosine (5hmC) e
 
 ### Metastatic tumors
 * [Expression and outcome](https://github.com/alcideschaux/5hmC-Kidney/blob/master/Data_Analysis/04_K5.md)
-* [Expression and survival]()
+* [Expression and survival](https://github.com/alcideschaux/5hmC-Kidney/blob/master/Data_Analysis/06_K5.md)
 * [Expression and regression models]()
