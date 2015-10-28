@@ -1,0 +1,190 @@
+---
+title: Expression and regression models in primary tumors
+subtitle: 5mhC expression in kidney cancer
+output: 
+  html_document: 
+    keep_md: yes
+---
+
+```{r Global, echo = FALSE, warning = FALSE, message = FALSE}
+# Establishing global options
+library(knitr)
+opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+options(knitr.table.format = "markdown")
+# Loading libraries and scripts
+library(survival)
+library(dplyr)
+library(tidyr)
+library(stringr)
+```
+
+```{r Regression}
+# Logistic regression tables
+logistic.table <- function(outcome, predictors, varlabels){
+  model <- list()
+  OR.center <- list()
+  OR.low <- list()
+  OR.high <- list()
+  OR.p <- list()
+  for(i in 1:length(predictors)) {
+    model[[i]] <- glm(outcome ~ predictors[[i]], family = binomial)
+    OR.center[[i]] <-format(exp(coef(model[[i]]))[2], digits = 2, nsmall = 2)
+    OR.low[[i]] <- format(exp(confint(model[[i]]))[2, 1], digits = 2, nsmall = 2)
+    OR.high[[i]] <- format(exp(confint(model[[i]]))[2, 2], digits = 2, nsmall = 2)
+    OR.p[[i]] <- format(summary(model[[i]])$coef[2, 4], digits = 2, width  = 6)
+  }
+  OR.center <- unlist(OR.center)
+  OR.low <- unlist(OR.low)
+  OR.high <- unlist(OR.high)
+  OR.p <- unlist(OR.p)
+  OR.table <- cbind("Variables" = varlabels, "OR" = OR.center,
+    "Lower 95% CI" = OR.low, "Upper 95% CI" = OR.high, "P value" = OR.p)
+  knitr::kable(OR.table, row.names = FALSE, align = c("l", "c", "c", "c", "c"))
+}
+# Cox regression tables
+cox.table <- function(outcome, fu, predictors, varlabels){
+  outcome <- as.numeric(outcome)
+  survival.obj <- survival::Surv(fu, outcome)
+  model <- list()
+  HR.center <- list()
+  HR.low <- list()
+  HR.high <- list()
+  HR.p <- list()
+  for(i in 1:length(predictors)) {
+    model[[i]] <- survival::coxph(survival.obj ~ predictors[[i]])
+    HR.center[[i]] <-format(summary(model[[i]])$conf.int[1], digits = 2, nsmall = 2)
+    HR.low[[i]] <- format(summary(model[[i]])$conf.int[3], digits = 2, nsmall = 2)
+    HR.high[[i]] <- format(summary(model[[i]])$conf.int[4], digits = 2, nsmall = 2)
+    HR.p[[i]] <- format(summary(model[[i]])$logtest[3], digits = 2, width  = 6)
+  }
+  HR.center <- unlist(HR.center)
+  HR.low <- unlist(HR.low)
+  HR.high <- unlist(HR.high)
+  HR.p <- unlist(HR.p)
+  HR.table <- cbind("Variables" = varlabels, "HR" = HR.center,
+    "Lower 95% CI" = HR.low, "Upper 95% CI" = HR.high, "P value" = HR.p)
+  knitr::kable(HR.table, row.names = FALSE, align = c("l", "c", "c", "c", "c"))
+}
+```
+
+In this section we will build regression models for overall mortality and cancer-related mortality according to clinicopathologic features and 5hmC expression. 5hmC expression will be categorized in low/high levels using as cutoff points: 1) the median; 2) the upper tertile. 
+
+For age and tumor size we will use the median to define categorical groups. Fuhrman grades and pT stages will also be colapsed in 2-level categorical groups.
+
+We will begin building uncondicional binary logistic regression models to estimate the odds ratios. We then will build Cox's proportional hazards regression models to estimate the hazard ratios. Follow-up length will be defined as months from nephrectomy.
+
+This section includes only the analysis of primary tumors. Metastatic tumors are analyzed separately.
+
+```{r Data}
+# Load the dataset
+Data_full <- read.csv("DatasetKidney.csv")
+# Fix column names
+colnames(Data_full) <- colnames(Data_full) %>%
+  str_replace_all("\\.", "_")
+# Selecte clinicopathologic features and 5hmC expression
+Data_full <- Data_full %>%
+  select(site:fu_months, hmc_med_tumor)
+# Recoding fuhrman as factor
+Data_full$fuhrman <- factor(Data_full$fuhrman, labels = c(
+  "Grade 1", "Grade 2", "Grade 3", "Grade 4"
+))
+# Create categories of 5hmC expression
+Data_full <- Data_full %>%
+  mutate(p50 = factor(
+    ifelse(hmc_med_tumor > median(hmc_med_tumor),
+      "High expression", "Low expression")
+  )) %>%
+  mutate(q3 = factor(
+    ifelse(hmc_med_tumor > quantile(hmc_med_tumor, .66),
+      "High expression", "Low expression")
+  ))
+# Create age and size group categories
+Data_full <- Data_full %>%
+  mutate(
+    age_group = factor(
+      ifelse(age > median(age, na.rm = TRUE),
+        "Above median age", "Below median age")
+    ),
+    size_group = factor(
+      ifelse(size > median(size, na.rm = TRUE),
+        "Above median size", "Below median size")
+    )
+  )
+# Create Fuhrman grades category (> Grade 2)
+Data_full <- Data_full %>%
+  mutate(
+    fuhrman_high = factor(
+      ifelse(as.numeric(fuhrman) > 2, "High grade", "Low grade")
+    )
+  )
+# Create pT stages category (> pT1a)
+Data_full <- Data_full %>%
+  mutate(
+    stage_high = factor(
+      ifelse(as.numeric(stage) > 1, "High pT", "Low pT")
+    )
+  )
+# Select only primary tumors
+Data <- Data_full %>%
+  filter(site == "Primary")
+Data <- droplevels(Data)
+# Defining follow-up
+FU <- Data$fu_months
+```
+
+***
+
+## Logistic regression: Overall mortality
+
+```{r Predictors}
+predictors <- with(Data, list(
+  "Age group: Above vs. below median" = age_group,
+  "Sex" = sex,
+  "Race" = race,
+  "Tumor size: Above vs. below median" = size_group,
+  "High pT stage (>pT1a)" = stage_high,
+  "High Fuhrman grade (>2)" = fuhrman_high,
+  "Tumor multifocality" = multifocal,
+  "Invasion of surgical margins" = free_margin,
+  "Tumor progression" = progression,
+  "High 5hmC expression (upper median)" = p50,
+  "High 5hmC expression (upper tertile)" = q3
+))
+varlabels <- names(predictors)
+```
+
+
+```{r OR_death}
+outcome <- Data$death
+logistic.table(outcome, predictors, varlabels)
+```
+
+***
+
+## Logistic regression: Cancer-related death
+
+```{r OR_dod}
+outcome <- Data$dod
+logistic.table(outcome, predictors, varlabels)
+```
+
+***
+
+## Cox regression: Overall mortality
+
+```{r HR_death}
+# Establishing follow-up
+outcome <- Data$death
+fu <- Data$fu_months
+cox.table(outcome, fu, predictors, varlabels)
+```
+
+***
+
+## Cox regression: Cancer-related mortality
+
+```{r HR_dod}
+outcome <- Data$dod
+cox.table(outcome, fu, predictors, varlabels)
+```
+
