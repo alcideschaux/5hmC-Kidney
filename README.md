@@ -14,3 +14,7 @@ This repository contains the data analysis of 5-hydroxy-methyl-cytosine (5hmC) e
 * [Expression and outcome](https://github.com/alcideschaux/5hmC-Kidney/blob/master/Data_Analysis/04_K5.md)
 * [Expression and survival](https://github.com/alcideschaux/5hmC-Kidney/blob/master/Data_Analysis/06_K5.md)
 * [Expression and regression models](https://github.com/alcideschaux/5hmC-Kidney/blob/master/Data_Analysis/08_K5.md)
+
+
+### Correlation matrix
+* [Correlation matrix between 5hmC, mTOR markers and other biomarkers](https://github.com/alcideschaux/5hmC-Kidney/blob/master/Data_Analysis/09_K5.md)

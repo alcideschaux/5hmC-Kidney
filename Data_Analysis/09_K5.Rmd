@@ -1,0 +1,50 @@
+---
+title: Correlation with mTOR markers
+subtitle: 5mhC expression in kidney cancer
+output: 
+  html_document: 
+    keep_md: yes
+---
+
+```{r Global, echo = FALSE, warning = FALSE, message = FALSE}
+# Establishing global options
+library(knitr)
+opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+options(knitr.table.format = "markdown")
+# Loading libraries and scripts
+library(corrplot)
+library(dplyr)
+library(tidyr)
+library(stringr)
+```
+
+In this section we will evaluate the correlation between 5hmC median expression and the following markers: PTEN, p-AKT, p-S6, p-4EBP1, p27, c-MYC, and HIF. Data on mTOR markers expression is available only for primary tumors.
+
+```{r Data}
+# Load the dataset
+Data_full <- read.csv("DatasetKidney.csv")
+# Fix column names
+colnames(Data_full) <- colnames(Data_full) %>%
+  str_replace_all("\\.", "_")
+# Select primary tumors and biomarkers
+Data <- Data_full %>%
+  filter(site == "Primary") %>%
+  select(hmc_med_tumor, cmyc_tumor:pten_tumor)
+# Listo of biomarkers
+biomarkers <- c("5hmC", "cMYC", "p27", "p-AKT", "p-S6", "p-4EBP1", "HIF", "PTEN")
+colnames(Data) <- biomarkers
+```
+
+## Correlation matrix
+First we will plot a correlation matrix of all biomarkers. Color intensity is related to the values of the correlation coefficients; the actual values of the correlation coefficients are also included. Correlation coefficients were reordered using hierarchical clustering.
+
+```{r Cor_1, fig.width = 9, fig.height = 9}
+cor_table <- cor(Data, use = "pairwise.complete.obs")
+corrplot(cor_table,
+  method = "color",
+  diag = FALSE,
+  outline = TRUE,
+  addCoef.col = "black",
+  order = "hclust"
+)
+```
