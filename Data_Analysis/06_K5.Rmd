@@ -1,0 +1,165 @@
+---
+title: Expression and survival in metastatic tumors
+subtitle: 5mhC expression in kidney cancer
+output: 
+  html_document: 
+    keep_md: yes
+---
+
+```{r Global, echo = FALSE, warning = FALSE, message = FALSE}
+# Establishing global options
+library(knitr)
+opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+options(knitr.table.format = "markdown")
+# Loading libraries and scripts
+library(ggplot2)
+library(ggfortify)
+library(survival)
+library(dplyr)
+library(tidyr)
+library(stringr)
+library(grid)
+# Personalized ggplot2 theme
+gtheme <- theme(
+  plot.title = element_text(size = 20, vjust = 1.5),
+  axis.title.x = element_text(vjust = 0, size = 16),
+  axis.text.x = element_text(color = "black"),
+  axis.title.y = element_text(vjust = 1.5, size = 16),
+  axis.text.y = element_text(color = "black"),
+  legend.position = c(.9, .9),
+  legend.title = element_blank(),
+  plot.margin = unit(c(1.5, 1, 1.5, 1), "lines")
+)
+```
+
+```{r gsurv}
+# ggplot2 survival curves using ggfortify
+gsurv <- function(FU, outcome, status, Y = 0.1){
+  ht <- survdiff(Surv(FU, as.numeric(outcome)) ~ status)
+  p <- format(pchisq(ht$chisq, df = 1, lower.tail = FALSE), digits = 2)
+  fit <- survfit(Surv(FU, as.numeric(outcome)) ~ status)
+  autoplot(fit, conf.int = FALSE, censor = FALSE, surv.size = 1) +
+    ylab("Survival") +
+    xlab("Follow-up, months") +
+    annotate("text", label = paste("Log-rank P value =", p), x = 24, y = Y) +
+    scale_colour_discrete(labels = levels(status)) +
+    scale_x_continuous(limits = c(0, 240), breaks = seq(0, 240, 12)) +
+    gtheme
+}
+```
+
+In this section we will plot survival curves for cancer-related mortality  (since all deaths are cancer-related in this group) according to clinicopathologic features and 5hmC expression, categorizing 5hmC expression in low/high levels using as cutoff points: 1) the median; 2) the upper tertile. Follow-up length will be defined as months from nephrectomy.
+
+For age we will use the median to define categorical groups.
+
+This section includes only the analysis of metastatic tumors. Primary tumors are analyzed separately.
+
+```{r Data}
+# Load the dataset
+Data_full <- read.csv("DatasetKidney.csv")
+# Fix column names
+colnames(Data_full) <- colnames(Data_full) %>%
+  str_replace_all("\\.", "_")
+# Selecte clinicopathologic features and 5hmC expression
+Data_full <- Data_full %>%
+  select(site:fu_months, hmc_med_tumor)
+# Recoding fuhrman as factor
+Data_full$fuhrman <- factor(Data_full$fuhrman, labels = c(
+  "Grade 1", "Grade 2", "Grade 3", "Grade 4"
+))
+# Create categories of 5hmC expression
+Data_full <- Data_full %>%
+  mutate(p50 = factor(
+    ifelse(hmc_med_tumor > median(hmc_med_tumor),
+      "High expression", "Low expression")
+  )) %>%
+  mutate(q3 = factor(
+    ifelse(hmc_med_tumor > quantile(hmc_med_tumor, .66),
+      "High expression", "Low expression")
+  ))
+# Create age and size group categories
+Data_full <- Data_full %>%
+  mutate(
+    age_group = factor(
+      ifelse(age > median(age, na.rm = TRUE),
+        "Above median age", "Below median age")
+    ),
+    size_group = factor(
+      ifelse(size > median(size, na.rm = TRUE),
+        "Above median size", "Below median size")
+    )
+  )
+# Create Fuhrman grades category (> Grade 2)
+Data_full <- Data_full %>%
+  mutate(
+    fuhrman_high = factor(
+      ifelse(as.numeric(fuhrman) > 2, "High grade", "Low grade")
+    )
+  )
+# Create pT stages category (> pT1a)
+Data_full <- Data_full %>%
+  mutate(
+    stage_high = factor(
+      ifelse(as.numeric(stage) > 1, "High pT", "Low pT")
+    )
+  )
+# Select only metastatic tumors
+Data <- Data_full %>%
+  filter(site == "Metastatic")
+Data <- droplevels(Data)
+# Defining follow-up
+FU <- Data$fu_months
+```
+
+***
+
+## Clinical features and survival
+In this section we will plot `Kaplan-Meier curves` for overall mortality and cancer-related mortality considering clinical features. We will compare survival curves using the `log-rank test`.
+
+### Cancer-related mortality
+```{r Clinicopath_DOD}
+# Establishing outcome
+outcome <- Data$dod
+# Patient's age
+status <- Data$age_group
+gsurv(FU, outcome, status, Y = 0.3) +
+  ggtitle("Patient's age and cancer-related mortality") +
+  theme(legend.position = c(0.8, 0.9))
+# Patient's sex
+status <- Data$sex
+gsurv(FU, outcome, status, Y = 0.80) +
+  ggtitle("Patient's sex and cancer-related mortality") +
+  theme(legend.position = c(0.92, 0.85))
+# size_group
+# stage_high
+# fuhrman_high
+# multifocal
+# free_margin
+# progression
+```
+
+## 5hmC levels and survival: Approach #1
+In this approch we will plot `Kaplan-Meier curves` for overall mortality and cancer-related mortality using the `median` H-score as the cutoff point for defining low/high 5hmC levels. We will compare survival curves using the `log-rank test`.
+
+```{r Approach1}
+# 5hmC and cancer-related mortality
+outcome <- Data$dod
+gsurv(FU, outcome, status, Y = 0.865) +
+  ggtitle("5hmC expression levels and \ncancer-related mortality") +
+  theme(legend.position = c(0.875, 0.8))
+```
+
+***
+
+## 5hmC levels and survival: Approach #2
+In this approch we will plot `Kaplan-Meier curves` for overall mortality and cancer-related mortality using the upper tertile `Q3` H-score as the cutoff point for defining low/high 5hmC levels. We will compare survival curves using the `log-rank test`.
+
+```{r Approach2}
+# 5hmC and cancer-related mortality
+outcome <- Data$dod
+gsurv(FU, outcome, status, Y = 0.9) +
+  ggtitle("5hmC expression levels and \ncancer-related mortality") +
+  theme(legend.position = c(0.875, 0.8))
+```
+
+***
