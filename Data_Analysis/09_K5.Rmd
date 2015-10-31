@@ -16,6 +16,19 @@ library(corrplot)
 library(dplyr)
 library(tidyr)
 library(stringr)
+library(ggplot2)
+library(grid)
+# Personalized ggplot2 theme
+gtheme <- theme(
+  plot.title = element_text(size = 20, vjust = 1.5),
+  axis.title.x = element_text(vjust = 0, size = 16),
+  axis.text.x = element_text(color = "black"),
+  axis.title.y = element_text(vjust = 1.5, size = 16),
+  axis.text.y = element_text(color = "black"),
+  legend.position = c(.9, .9),
+  legend.title = element_blank(),
+  plot.margin = unit(c(2, 1, 2, 1), "lines")
+)
 ```
 
 In this section we will evaluate the correlation between 5hmC median expression and the following markers: PTEN, p-AKT, p-S6, p-4EBP1, p27, c-MYC, and HIF. Data on mTOR markers expression is available only for primary tumors.
@@ -31,9 +44,29 @@ Data <- Data_full %>%
   filter(site == "Primary") %>%
   select(hmc_med_tumor, cmyc_tumor:pten_tumor)
 # Listo of biomarkers
-biomarkers <- c("5hmC", "cMYC", "p27", "p-AKT", "p-S6", "p-4EBP1", "HIF", "PTEN")
+biomarkers <- c("hmC", "cMYC", "p27", "pAKT", "pS6", "p4EBP1", "HIF", "PTEN")
 colnames(Data) <- biomarkers
 ```
+
+```{r gcor}
+gcor <- function(X = 130) {
+  C <- cor.test(VarX, VarY)
+  C_P <- format(C$p.value, digits = 2, scientific = TRUE)
+  C_C <- format(C$estimate, digits = 2)
+  Y <- max(VarY, na.rm = T) - 0.1*max(VarY, na.rm = T)
+  ggplot(Data, aes(x = VarX, y = VarY)) +
+    geom_point(color = "darkblue", size = 3) +
+    geom_smooth(method = lm) +
+    annotate("text",
+           label = paste("P value =", C_P, "\nCoef =", C_C),
+           x = X, y = Y, hjust = 0) +
+    xlab("5hmC expression") +
+    ylab(Ylab) +
+    ggtitle(paste("Correlation of 5hmC and\n", Ylab)) +
+    gtheme
+}
+```
+
 
 ## Correlation matrix
 First we will plot a correlation matrix of all biomarkers. Color intensity is related to the values of the correlation coefficients; the actual values of the correlation coefficients are also included. Correlation coefficients were reordered using hierarchical clustering.
@@ -48,3 +81,37 @@ corrplot(cor_table,
   order = "hclust"
 )
 ```
+
+```{r scatterplots}
+# Establish VarX for all scatterplots
+VarX <- Data$hmC
+# phos-AKT
+VarY <- Data$pAKT
+Ylab <- "phos-AKT expression"
+gcor()
+# phos-S6
+VarY <- Data$pS6
+Ylab <- "phos-S6 expression"
+gcor()
+# phos-4EBP1
+VarY <- Data$p4EBP1
+Ylab <- "phos-4EBP1 expression"
+gcor()
+# c-MYC
+VarY <- Data$cMYC
+Ylab <- "c-MYC expression"
+gcor()
+# p27
+VarY <- Data$p27
+Ylab <- "p27 expression"
+gcor()
+# p27
+VarY <- Data$PTEN
+Ylab <- "PTEN expression"
+gcor()
+# HIF
+VarY <- Data$HIF
+Ylab <- "HIF expression"
+gcor(X = 5)
+```
+
